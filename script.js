@@ -46,7 +46,7 @@
     // 3. HERO BANNER (Bagian Tampilan Utama Atas)
     // ------------------------------------------------------------------------
     heroEyebrow: 'Annyeonghaseyo · Layanan Laundry Express Higienis',
-    heroTitle: 'Cucian Bersih, Wangi, dan Rapi dalam Hitungan Jam.',
+    heroTitle: 'Bersih, Wangi, dan Rapi dalam Hitungan Jam.',
     heroSubtitle:
       'Konsep 1 Mesin 1 Pelanggan agar pakaian Anda tidak pernah tercampur. Dijemput kurir maksimal 30 menit dan diantar kembali tepat waktu.',
     heroCtaText: 'Hitung Harga & Pesan',

@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chingu Laundry Express — Layanan Laundry Kiloan &amp; Satuan Higienis</title>
+    <meta
+      name="description"
+      content="Layanan laundry kiloan dan satuan express dengan konsep 1 mesin 1 pelanggan, antar-jemput 30 menit, kalkulator harga otomatis, dan pemesanan WhatsApp."
+    />
+    <meta property="og:title" content="Chingu Laundry Express — Layanan Laundry Kiloan &amp; Satuan Higienis" />
+    <meta
+      property="og:description"
+      content="Layanan laundry kiloan dan satuan express dengan konsep 1 mesin 1 pelanggan, antar-jemput 30 menit, kalkulator harga otomatis, dan pemesanan WhatsApp."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts: Plus Jakarta Sans (Display), DM Sans (Body), JetBrains Mono (Tabular Prices) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet Utama CSS3 -->
+    <link rel="stylesheet" href="./style.css" />
+
+    <!-- Lucide Icons CDN & Logika Aplikasi Vanilla JavaScript -->
+    <script defer src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.min.js"></script>
+    <script defer src="./script.js"></script>
+  </head>
+  <body id="top">
+    <!-- Top Promo Announcement Bar (Dikelola dari Panel Pengelola Rahasia) -->
+    <div id="promo-banner-bar" class="promo-bar" role="region" aria-label="Informasi Promo">
+      <div class="container promo-bar-inner">
+        <div class="promo-bar-content">
+          <span class="promo-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+          </span>
+          <p id="promo-banner-text" class="promo-text">
+            Promo Pelanggan Baru: Diskon 10% untuk semua layanan kiloan dengan kode voucher
+          </p>
+          <button
+            type="button"
+            id="promo-code-chip"
+            class="promo-code-btn"
+            title="Klik untuk gunakan kode promo di kalkulator"
+          >
+            <span id="promo-code-label">CHINGU10</span>
+          </button>
+        </div>
+        <a href="#kalkulator-pesan" class="promo-bar-link">
+          <span>Gunakan Sekarang</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sticky 3-Zone Top Bar Navigation -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <!-- Zone 1: Single-line Brand Wordmark -->
+        <a href="#top" class="brand-wordmark" id="brand-wordmark">Chingu Laundry</a>
+
+        <!-- Zone 2: Concise Single-line Navigation Links -->
+        <nav class="main-nav" aria-label="Navigasi utama">
+          <a href="#keunggulan" class="nav-link">Keunggulan</a>
+          <a href="#harga" class="nav-link">Daftar Tarif</a>
+          <a href="#kalkulator-pesan" class="nav-link">Kalkulator</a>
+          <a href="#outlet" class="nav-link">Outlet</a>
+          <a href="#testimoni" class="nav-link">Testimoni</a>
+          <a href="#faq" class="nav-link">FAQ</a>
+        </nav>
+
+        <!-- Zone 3: Single Primary Action + Mobile Menu Trigger -->
+        <div class="header-actions">
+          <a href="#kalkulator-pesan" class="btn btn-primary btn-sm">Pesan Sekarang</a>
+          <button
+            type="button"
+            id="mobile-menu-toggle"
+            class="mobile-menu-btn"
+            aria-label="Buka menu navigasi"
+            aria-expanded="false"
+            aria-controls="mobile-nav-drawer"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div id="mobile-nav-drawer" class="mobile-nav-drawer" hidden>
+        <div class="container mobile-nav-inner">
+          <a href="#keunggulan" class="mobile-nav-link">Keunggulan</a>
+          <a href="#harga" class="mobile-nav-link">Daftar Tarif</a>
+          <a href="#kalkulator-pesan" class="mobile-nav-link">Kalkulator &amp; Pesan</a>
+          <a href="#outlet" class="mobile-nav-link">Lokasi Outlet</a>
+          <a href="#testimoni" class="mobile-nav-link">Testimoni Pelanggan</a>
+          <a href="#faq" class="mobile-nav-link">FAQ</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero Section (Signature Teal Surface + Warm Butter Accent) -->
+      <section class="hero-section">
+        <div class="hero-pattern-bg" aria-hidden="true"></div>
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p id="hero-eyebrow" class="hero-eyebrow">
+              Annyeonghaseyo · Layanan Laundry Express Higienis
+            </p>
+            <h1 id="hero-title" class="hero-title">
+              Cucian Bersih, Wangi, dan Rapi dalam Hitungan Jam.
+            </h1>
+            <p id="hero-subtitle" class="hero-subtitle">
+              Konsep 1 Mesin 1 Pelanggan agar pakaian Anda tidak pernah tercampur. Dijemput kurir maksimal 30 menit dan diantar kembali tepat waktu.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#kalkulator-pesan" id="hero-cta-btn" class="btn btn-primary btn-lg">
+                <span>Hitung Harga &amp; Pesan</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a href="#harga" class="btn btn-outline-light btn-lg">Lihat Daftar Tarif</a>
+            </div>
+
+            <!-- Proof Strip (Tabular Numerals, Unboxed, Editable in Admin) -->
+            <div id="hero-metrics" class="hero-metrics" aria-label="Statistik layanan">
+              <div class="hero-metric-item">
+                <strong class="metric-value" id="metric-val-0">27+</strong>
+                <span class="metric-label" id="metric-lbl-0">Outlet di 5 Kota</span>
+              </div>
+              <div class="hero-metric-divider" aria-hidden="true"></div>
+              <div class="hero-metric-item">
+                <strong class="metric-value" id="metric-val-1">30 Mnt</strong>
+                <span class="metric-label" id="metric-lbl-1">Pickup Kurir Cepat</span>
+              </div>
+              <div class="hero-metric-divider" aria-hidden="true"></div>
+              <div class="hero-metric-item">
+                <strong class="metric-value" id="metric-val-2">3 Jam</strong>
+                <span class="metric-label" id="metric-lbl-2">Layanan Express Kilat</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual-col">
+            <div class="hero-media-frame">
+              <div class="media-fallback" aria-hidden="true">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="2" width="18" height="20" rx="2"></rect>
+                  <circle cx="12" cy="13" r="5"></circle>
+                  <path d="M12 10a3 3 0 0 1 3 3"></path>
+                  <line x1="7" y1="6" x2="7.01" y2="6"></line>
+                  <line x1="10" y1="6" x2="10.01" y2="6"></line>
+                </svg>
+                <span>Chingu Laundry Lounge</span>
+              </div>
+              <img
+                id="img-hero"
+                src="./assets/images/hero_laundry_lounge.jpg"
+                alt="Interior ruang cuci modern Chingu Laundry dengan mesin front-loading higienis dan meja lipat kayu alami"
+                referrerpolicy="no-referrer"
+              />
+              <div class="hero-floating-caption">
+                <span class="caption-icon" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                </span>
+                <div>
+                  <strong class="caption-title" id="hero-caption-title">1 Mesin, 1 Customer</strong>
+                  <span class="caption-sub" id="hero-caption-sub">Pakaian tidak pernah dicampur</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Signature Butter-Yellow Ticker Band (Editable in Admin) -->
+      <div class="marquee-band" aria-hidden="true">
+        <div id="marquee-track" class="marquee-track">
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            1 Mesin 1 Customer
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Express Selesai 3 Jam
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            Antar Jemput Maks. 30 Menit
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            Parfum Premium Tahan Lama
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            Pembayaran QRIS &amp; Cashless
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            1 Mesin 1 Customer
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            Express Selesai 3 Jam
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            Antar Jemput Maks. 30 Menit
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+            Parfum Premium Tahan Lama
+          </span>
+          <span class="marquee-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            Pembayaran QRIS &amp; Cashless
+          </span>
+        </div>
+      </div>
+
+      <!-- Section 1: Mengapa Memilih Kami (Keunggulan Layanan - Editable in Admin) -->
+      <section id="keunggulan" class="section section-light">
+        <div class="container">
+          <div class="section-header-split">
+            <div>
+              <p id="features-kicker" class="section-kicker">Standar Pelayanan Kami</p>
+              <h2 id="features-title" class="section-title">Mengapa Harus Chingu Laundry?</h2>
+            </div>
+            <p id="features-lead" class="section-lead">
+              Dirancang untuk gaya hidup aktif yang mengutamakan kebersihan higienis, ketepatan waktu, dan perawatan serat kain yang lembut.
+            </p>
+          </div>
+
+          <div id="features-grid" class="features-grid">
+            <article class="feature-card">
+              <div class="feature-top">
+                <span class="feature-num">01</span>
+                <span class="feature-icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="2" width="18" height="20" rx="2"></rect>
+                    <circle cx="12" cy="13" r="5"></circle>
+                    <line x1="7" y1="6" x2="7.01" y2="6"></line>
+                  </svg>
+                </span>
+              </div>
+              <h3 class="feature-title">1 Mesin untuk 1 Pelanggan</h3>
+              <p class="feature-desc">
+                Setiap order diproses dalam tabung cuci terpisah untuk menjaga higienitas dan mencegah pakaian tertukar.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-top">
+                <span class="feature-num">02</span>
+                <span class="feature-icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </span>
+              </div>
+              <h3 class="feature-title">Pilihan Kecepatan Express 3 Jam</h3>
+              <p class="feature-desc">
+                Tersedia layanan Reguler 3 Hari, One Day 24 Jam, Express 6 Jam, hingga paket kilat Quick 3 Jam selesai.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-top">
+                <span class="feature-num">03</span>
+                <span class="feature-icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="3" width="15" height="13"></rect>
+                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                  </svg>
+                </span>
+              </div>
+              <h3 class="feature-title">Kurir Jemput Maksimal 30 Menit</h3>
+              <p class="feature-desc">
+                Pesan dari rumah atau kantor, kurir mitra kami segera menjemput cucian Anda dan mengantar kembali dalam keadaan rapi.
+              </p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-top">
+                <span class="feature-num">04</span>
+                <span class="feature-icon-box" aria-hidden="true">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                  </svg>
+                </span>
+              </div>
+              <h3 class="feature-title">Setrika Uap &amp; Parfum Eksklusif</h3>
+              <p class="feature-desc">
+                Finishing menggunakan boiler setrika uap yang aman untuk bahan sensitif serta pilihan parfum tahan lama.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Daftar Tarif Layanan & Kalkulator Harga Kiloan Interaktif -->
+      <section id="harga" class="section section-surface">
+        <div class="container">
+          <div class="section-header-split">
+            <div>
+              <p id="pricing-kicker" class="section-kicker">Transparansi Harga</p>
+              <h2 id="pricing-title" class="section-title">Daftar Tarif &amp; Kalkulator Kiloan</h2>
+            </div>
+            <p id="pricing-lead" class="section-lead">
+              Pilih kecepatan pengerjaan untuk melihat tarif per kilogram, lalu hitung estimasi biaya cucian Anda secara otomatis.
+            </p>
+          </div>
+
+          <!-- Rate Matrix + Promo Showcase -->
+          <div class="pricing-showcase-grid">
+            <div class="pricing-matrix-panel">
+              <div class="speed-tabs-header">
+                <span class="speed-tabs-label">Pilih Kecepatan Pengerjaan:</span>
+                <div class="segmented-control" role="tablist" aria-label="Filter kecepatan layanan" id="catalog-speed-tabs">
+                  <!-- Diisi dinamis oleh script.js -->
+                </div>
+              </div>
+
+              <div id="catalog-services-list" class="service-rate-cards">
+                <!-- Diisi dinamis oleh script.js -->
+              </div>
+            </div>
+
+            <aside class="promo-showcase-card" aria-label="Sorotan Promo & Kualitas">
+              <div class="promo-card-media">
+                <div class="media-fallback" aria-hidden="true">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
+                  </svg>
+                  <span>Lipatan Rapi &amp; Higienis</span>
+                </div>
+                <img
+                  id="img-promo"
+                  src="./assets/images/promo_fresh_linens.jpg"
+                  alt="Tumpukan kemeja dan handuk katun bersih yang dilipat rapi di atas meja"
+                  referrerpolicy="no-referrer"
+                />
+              </div>
+              <div class="promo-card-body">
+                <p id="promo-card-kicker" class="promo-card-kicker">Penawaran Spesial</p>
+                <h3 id="promo-card-heading" class="promo-card-title">
+                  Hemat 10% untuk Order Pertama Anda
+                </h3>
+                <p id="promo-card-desc" class="promo-card-desc">
+                  Gunakan kode voucher aktif pada kalkulator di bawah untuk mendapatkan potongan langsung pada total biaya cuci kiloan.
+                </p>
+                <button type="button" id="apply-featured-promo-btn" class="btn btn-secondary btn-full">
+                  Terapkan Kode Promo ke Kalkulator
+                </button>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Interactive Kilogram Calculator & Direct WhatsApp Booking -->
+          <div id="kalkulator-pesan" class="calculator-shell">
+            <div class="calculator-header">
+              <div>
+                <p id="calc-kicker" class="section-kicker">Simulasi &amp; Reservasi Instan</p>
+                <h3 id="calc-title" class="calculator-title">Kalkulator Harga Kiloan &amp; Pesan WhatsApp</h3>
+              </div>
+              <p class="calculator-hours">
+                Jam Operasional: <strong id="display-operational-hours">Setiap hari 07.00 – 20.00 WIB</strong>
+              </p>
+            </div>
+
+            <form id="laundry-order-form" class="calculator-grid" novalidate>
+              <!-- Left Column: Service Calculator + Customer Pickup Form -->
+              <div class="calculator-inputs-col">
+                <fieldset class="form-group-block">
+                  <legend class="block-legend">01. Hitung Estimasi Cucian Kiloan</legend>
+
+                  <div class="form-row-2">
+                    <div class="field-wrap">
+                      <label for="calc-service" class="field-label">Jenis Layanan Laundry</label>
+                      <select id="calc-service" name="serviceId" class="field-control">
+                        <!-- Diisi dinamis oleh script.js -->
+                      </select>
+                    </div>
+
+                    <div class="field-wrap">
+                      <label for="calc-weight" class="field-label">Berat Cucian (Kilogram)</label>
+                      <div class="weight-stepper">
+                        <button
+                          type="button"
+                          id="weight-decrease-btn"
+                          class="stepper-btn"
+                          aria-label="Kurangi berat cucian 0.5 kg"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                        </button>
+                        <input
+                          type="number"
+                          id="calc-weight"
+                          name="weight"
+                          class="field-control weight-input"
+                          min="1"
+                          max="200"
+                          step="0.5"
+                          value="3"
+                          required
+                        />
+                        <span class="weight-unit">kg</span>
+                        <button
+                          type="button"
+                          id="weight-increase-btn"
+                          class="stepper-btn"
+                          aria-label="Tambah berat cucian 0.5 kg"
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                          </svg>
+                        </button>
+                      </div>
+                      <div class="weight-presets" role="group" aria-label="Pilihan cepat berat cucian">
+                        <button type="button" class="preset-btn" data-weight="3">3 kg</button>
+                        <button type="button" class="preset-btn" data-weight="5">5 kg</button>
+                        <button type="button" class="preset-btn" data-weight="7">7 kg</button>
+                        <button type="button" class="preset-btn" data-weight="10">10 kg</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="field-wrap">
+                    <span class="field-label">Kecepatan Layanan</span>
+                    <div id="calc-speed-options" class="speed-radio-grid" role="radiogroup" aria-label="Pilih kecepatan pengerjaan">
+                      <!-- Diisi dinamis oleh script.js -->
+                    </div>
+                  </div>
+
+                  <div class="form-row-3">
+                    <div class="field-wrap">
+                      <label for="calc-pickup" class="field-label">Metode Antar-Jemput</label>
+                      <select id="calc-pickup" name="pickupMethod" class="field-control">
+                        <option value="courier">Antar-Jemput Kurir</option>
+                        <option value="self">Antar &amp; Ambil Sendiri</option>
+                      </select>
+                    </div>
+
+                    <div class="field-wrap">
+                      <label for="calc-fragrance" class="field-label">Aroma Parfum</label>
+                      <select id="calc-fragrance" name="fragrance" class="field-control">
+                        <option value="Sakura Bloom">Sakura Bloom</option>
+                        <option value="Fresh Cotton">Fresh Cotton</option>
+                        <option value="Ocean Breeze">Ocean Breeze</option>
+                        <option value="Tanpa Parfum">Tanpa Parfum</option>
+                      </select>
+                    </div>
+
+                    <div class="field-wrap">
+                      <label for="calc-promo-code" class="field-label">Kode Promo (Opsional)</label>
+                      <div class="promo-input-group">
+                        <input
+                          type="text"
+                          id="calc-promo-code"
+                          name="promoCode"
+                          class="field-control"
+                          placeholder="Cth: CHINGU10"
+                          autocomplete="off"
+                        />
+                        <button type="button" id="apply-promo-btn" class="btn btn-outline-dark btn-sm">
+                          Pakai
+                        </button>
+                      </div>
+                      <p id="promo-feedback-msg" class="field-hint" aria-live="polite"></p>
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="form-group-block">
+                  <legend class="block-legend">02. Data Pemesan &amp; Alamat Penjemputan</legend>
+
+                  <div class="form-row-2">
+                    <div class="field-wrap">
+                      <label for="cust-name" class="field-label">
+                        Nama Lengkap <span class="required-mark" aria-hidden="true">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="cust-name"
+                        name="customerName"
+                        class="field-control"
+                        placeholder="Masukkan nama Anda"
+                        required
+                      />
+                    </div>
+
+                    <div class="field-wrap">
+                      <label for="cust-phone" class="field-label">
+                        Nomor WhatsApp Aktif <span class="required-mark" aria-hidden="true">*</span>
+                      </label>
+                      <input
+                        type="tel"
+                        id="cust-phone"
+                        name="customerPhone"
+                        class="field-control"
+                        placeholder="Cth: 081234567890"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row-2">
+                    <div class="field-wrap">
+                      <label for="cust-outlet" class="field-label">
+                        Pilih Outlet Terdekat <span class="required-mark" aria-hidden="true">*</span>
+                      </label>
+                      <select id="cust-outlet" name="outlet" class="field-control" required>
+                        <!-- Diisi dinamis oleh script.js -->
+                      </select>
+                    </div>
+
+                    <div class="field-wrap">
+                      <label for="cust-notes" class="field-label">Catatan Khusus (Opsional)</label>
+                      <input
+                        type="text"
+                        id="cust-notes"
+                        name="notes"
+                        class="field-control"
+                        placeholder="Cth: Pisahkan pakaian putih / mudah luntur"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field-wrap">
+                    <label for="cust-address" class="field-label">
+                      Alamat Lengkap &amp; Patokan <span class="required-mark" aria-hidden="true">*</span>
+                    </label>
+                    <textarea
+                      id="cust-address"
+                      name="address"
+                      class="field-control field-textarea"
+                      rows="2"
+                      placeholder="Tuliskan nama jalan, nomor rumah/kost, dan patokan terdekat"
+                      required
+                    ></textarea>
+                  </div>
+                </fieldset>
+              </div>
+
+              <!-- Right Column: Live Price Summary & WhatsApp Confirmation -->
+              <div class="calculator-summary-col">
+                <div class="summary-card">
+                  <div class="summary-card-head">
+                    <h4 class="summary-heading">Ringkasan Estimasi Biaya</h4>
+                    <span class="summary-sub">Kalkulasi otomatis per kilogram</span>
+                  </div>
+
+                  <dl class="summary-breakdown">
+                    <div class="breakdown-row">
+                      <dt>Layanan Dipilih</dt>
+                      <dd id="sum-service-name">Cuci Kering Gosok</dd>
+                    </div>
+                    <div class="breakdown-row">
+                      <dt>Kecepatan</dt>
+                      <dd id="sum-speed-name">Reguler (3 Hari)</dd>
+                    </div>
+                    <div class="breakdown-row">
+                      <dt>Tarif per Kg</dt>
+                      <dd id="sum-rate-per-kg" class="mono-num">Rp 8.000/kg</dd>
+                    </div>
+                    <div class="breakdown-row">
+                      <dt>Berat Dihitung</dt>
+                      <dd id="sum-weight" class="mono-num">3 kg</dd>
+                    </div>
+                    <div class="breakdown-row">
+                      <dt>Subtotal Cucian</dt>
+                      <dd id="sum-subtotal" class="mono-num">Rp 24.000</dd>
+                    </div>
+                    <div class="breakdown-row">
+                      <dt>Antar-Jemput Kurir</dt>
+                      <dd id="sum-pickup-fee" class="mono-num">Gratis</dd>
+                    </div>
+                    <div id="sum-discount-row" class="breakdown-row breakdown-discount" hidden>
+                      <dt>Diskon Promo (<span id="sum-discount-label">10%</span>)</dt>
+                      <dd id="sum-discount-amount" class="mono-num">-Rp 0</dd>
+                    </div>
+                    <div class="breakdown-total">
+                      <dt>Estimasi Total Harga</dt>
+                      <dd id="calc-total-price" class="total-price-value mono-num">Rp 24.000</dd>
+                    </div>
+                  </dl>
+
+                  <!-- Live WhatsApp Message Preview -->
+                  <div class="wa-preview-box">
+                    <div class="wa-preview-header">
+                      <span>Pratinjau Format Pesan WhatsApp</span>
+                      <span id="wa-target-display" class="mono-num">WA: 0811-2008-1012</span>
+                    </div>
+                    <pre id="wa-message-preview" class="wa-preview-text"></pre>
+                  </div>
+
+                  <!-- Validation Error Alert -->
+                  <div id="order-error-banner" class="form-alert form-alert-error" role="alert" hidden></div>
+
+                  <!-- Primary Submit CTA -->
+                  <button type="submit" id="submit-order-btn" class="btn btn-primary btn-lg btn-full">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    <span>Pesan Sekarang &amp; Konfirmasi via WhatsApp</span>
+                  </button>
+
+                  <!-- Order Confirmation Box (Shown after valid submission) -->
+                  <div id="order-confirmation-card" class="order-confirmation-box" role="status" aria-live="polite" hidden>
+                    <div class="confirmation-header">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <div>
+                        <strong>Pesanan Diformat &amp; Siap Dikirim</strong>
+                        <span id="confirmed-order-code" class="mono-num">Ref: #CL-0001</span>
+                      </div>
+                    </div>
+                    <p id="confirmed-order-summary" class="confirmation-desc"></p>
+                    <div class="confirmation-actions">
+                      <a
+                        id="direct-wa-link"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn btn-whatsapp btn-full"
+                      >
+                        <span>Buka WhatsApp Admin Sekarang</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                          <polyline points="15 3 21 3 21 9"></polyline>
+                          <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                      </a>
+                      <button type="button" id="copy-order-btn" class="btn btn-outline-dark btn-sm btn-full">
+                        Salin Teks Pesanan
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Cara Pemesanan & Standar Fasilitas (Editable in Admin) -->
+      <section id="cara-pesan" class="section section-light">
+        <div class="container process-split-grid">
+          <div class="process-steps-col">
+            <p id="process-kicker" class="section-kicker">Alur Layanan Praktis</p>
+            <h2 id="process-title" class="section-title">Tinggal Duduk Manis, Cucian Beres Tepat Waktu.</h2>
+            <p id="process-lead" class="section-lead">
+              Empat langkah terstruktur dari penjemputan hingga pengantaran kembali ke alamat Anda.
+            </p>
+
+            <ol id="process-list" class="process-list">
+              <li class="process-step">
+                <span class="step-badge mono-num">01</span>
+                <div>
+                  <h3 class="step-title">Hitung Estimasi &amp; Konfirmasi Form</h3>
+                  <p class="step-desc">
+                    Pilih jenis layanan kiloan, kecepatan pengerjaan, dan isi alamat penjemputan melalui kalkulator di atas.
+                  </p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="step-badge mono-num">02</span>
+                <div>
+                  <h3 class="step-title">Kurir Jemput Maksimal 30 Menit</h3>
+                  <p class="step-desc">
+                    Kurir outlet terdekat datang menjemput cucian dan melakukan penimbangan transparan di tempat.
+                  </p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="step-badge mono-num">03</span>
+                <div>
+                  <h3 class="step-title">Proses Cuci 1 Mesin 1 Pelanggan</h3>
+                  <p class="step-desc">
+                    Dicuci dengan deterjen antibakteri ramah serat kain, dikeringkan optimal, dan disetrika uap secara teliti.
+                  </p>
+                </div>
+              </li>
+              <li class="process-step">
+                <span class="step-badge mono-num">04</span>
+                <div>
+                  <h3 class="step-title">Pengantaran Rapi &amp; Pembayaran Mudah</h3>
+                  <p class="step-desc">
+                    Cucian diantar dalam kemasan rapi dan wangi. Pembayaran praktis via QRIS, transfer bank, atau tunai.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="process-media-col">
+            <div class="facility-media-frame">
+              <div class="media-fallback" aria-hidden="true">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Fasilitas Setrika Uap Higienis</span>
+              </div>
+              <img
+                id="img-facility"
+                src="./assets/images/facility_steam_care.jpg"
+                alt="Tim profesional Chingu Laundry melakukan penyetrikaan uap pada kemeja putih di ruang kerja higienis"
+                referrerpolicy="no-referrer"
+              />
+              <div class="facility-caption-bar">
+                <div>
+                  <strong id="facility-caption-title">10+ Tahun Pengalaman Operasional</strong>
+                  <span id="facility-caption-sub">Melayani kebutuhan harian rumah tangga, apartemen, hingga korporat</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Jaringan Outlet & Kepercayaan Pelanggan / Testimoni (Editable in Admin) -->
+      <section id="outlet" class="section section-surface">
+        <div class="container">
+          <div class="section-header-split">
+            <div>
+              <p id="outlets-kicker" class="section-kicker">Jaringan Cabang Resmi</p>
+              <h2 id="outlets-title" class="section-title">Temukan Outlet Terdekat</h2>
+            </div>
+            <p id="outlets-lead" class="section-lead">
+              Filter berdasarkan kota atau cari nama area untuk langsung memilih cabang penjemputan pada formulir pemesanan.
+            </p>
+          </div>
+
+          <!-- City Filter & Search Controls -->
+          <div class="outlet-toolbar">
+            <div class="segmented-control" role="group" aria-label="Filter kota outlet" id="outlet-city-filters">
+              <button type="button" class="seg-btn is-active" data-city="Semua">Semua</button>
+              <button type="button" class="seg-btn" data-city="Bandung">Bandung</button>
+              <button type="button" class="seg-btn" data-city="Jakarta">Jakarta</button>
+              <button type="button" class="seg-btn" data-city="Bekasi">Bekasi</button>
+              <button type="button" class="seg-btn" data-city="Semarang">Semarang</button>
+            </div>
+
+            <div class="outlet-search-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="search"
+                id="outlet-search-input"
+                class="outlet-search-input"
+                placeholder="Cari area atau jalan outlet..."
+                aria-label="Cari area atau jalan outlet"
+              />
+            </div>
+          </div>
+
+          <!-- Outlet Cards + Storefront Visual -->
+          <div class="outlets-layout-grid">
+            <div id="outlets-list" class="outlets-cards-grid">
+              <!-- Diisi dinamis oleh script.js -->
+            </div>
+
+            <aside class="outlet-visual-card">
+              <div class="outlet-visual-media">
+                <div class="media-fallback" aria-hidden="true">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                  <span>Gerai Resmi Chingu Laundry</span>
+                </div>
+                <img
+                  id="img-outlet"
+                  src="./assets/images/outlet_storefront_interior.jpg"
+                  alt="Interior gerai resmi Chingu Laundry dengan meja layanan kayu dan rak gantung pakaian"
+                  referrerpolicy="no-referrer"
+                />
+              </div>
+              <div class="outlet-visual-body">
+                <h3 id="partnership-title">Kemitraan &amp; Kontrak Perusahaan</h3>
+                <p id="partnership-desc">
+                  Melayani kebutuhan laundry kiloan rutin untuk kantor, klinik, hotel, asrama, dan institusi pendidikan dengan tarif kontrak khusus.
+                </p>
+                <a href="#kalkulator-pesan" class="btn btn-outline-dark btn-sm">Konsultasi Layanan</a>
+              </div>
+            </aside>
+          </div>
+
+          <!-- Testimonials Block: Kepercayaan Pelanggan — Pengalaman Pelanggan Setia Kami -->
+          <div id="testimoni" class="testimonials-block">
+            <div class="testimonials-head">
+              <p id="testimonials-kicker" class="section-kicker">Kepercayaan Pelanggan</p>
+              <h3 id="testimonials-title" class="testimonials-title">Pengalaman Pelanggan Setia Kami</h3>
+            </div>
+
+            <div id="testimonials-grid" class="testimonials-grid">
+              <figure class="testimonial-card">
+                <div class="star-row" aria-label="Rating 5 dari 5">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <blockquote class="testimonial-quote">
+                  Pengerjaan sangat cepat, lipatan rapi, dan aromanya tahan lama. Konsep satu mesin satu pelanggan membuat saya tenang mencuci pakaian kerja setiap minggu.
+                </blockquote>
+                <figcaption class="testimonial-author">
+                  <strong>Inggit Chairun</strong>
+                  <span>Content Creator · Bandung</span>
+                </figcaption>
+              </figure>
+
+              <figure class="testimonial-card">
+                <div class="star-row" aria-label="Rating 5 dari 5">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <blockquote class="testimonial-quote">
+                  Sangat terbantu dengan paket Express dan layanan antar-jemputnya. Estimasi biaya di kalkulator transparan dan respon admin WhatsApp sangat sigap.
+                </blockquote>
+                <figcaption class="testimonial-author">
+                  <strong>Radya Ananta Vikrama</strong>
+                  <span>Karyawan Swasta · Jakarta Selatan</span>
+                </figcaption>
+              </figure>
+
+              <figure class="testimonial-card">
+                <div class="star-row" aria-label="Rating 5 dari 5">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                </div>
+                <blockquote class="testimonial-quote">
+                  Harga kiloan sangat bersahabat untuk mahasiswa, pakaian halus tidak pernah melar karena disetrika uap, dan selalu selesai sesuai jam yang dijanjikan.
+                </blockquote>
+                <figcaption class="testimonial-author">
+                  <strong>Salsabila Septia Gunawan</strong>
+                  <span>Mahasiswi · Dago Bandung</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: FAQ Accordion (Editable in Admin) -->
+      <section id="faq" class="section section-light">
+        <div class="container faq-container">
+          <div class="faq-header">
+            <p id="faq-kicker" class="section-kicker">Informasi Umum</p>
+            <h2 id="faq-title" class="section-title">Pertanyaan yang Sering Diajukan</h2>
+          </div>
+
+          <div class="faq-list" id="faq-list">
+            <details class="faq-item" open>
+              <summary class="faq-question">
+                <span>Berapa minimal berat pemesanan laundry kiloan?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>
+                  Pemesanan laundry kiloan dapat dimulai dari 1 kg dengan perhitungan berat aktual yang ditimbang langsung oleh kurir atau petugas outlet menggunakan timbangan digital terkalibrasi.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Apakah cucian saya digabung dengan pakaian pelanggan lain?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>
+                  Tidak pernah. Kami menerapkan standar operasional 1 mesin cuci dan 1 mesin pengering khusus untuk 1 pelanggan demi menjaga kebersihan higienis dan mencegah pakaian tertukar.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Bagaimana cara kerja layanan antar-jemput 30 menit?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>
+                  Setelah Anda mengisi kalkulator dan mengirim konfirmasi pesanan ke WhatsApp admin, kurir outlet terdekat akan menuju lokasi penjemputan dalam estimasi waktu maksimal 30 menit pada jam operasional.
+                </p>
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Metode pembayaran apa saja yang tersedia?</span>
+                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </summary>
+              <div class="faq-answer">
+                <p>
+                  Anda dapat membayar secara cashless melalui QRIS (GoPay, OVO, DANA, ShopeePay, BCA, Mandiri, dan seluruh aplikasi perbankan), transfer bank, maupun tunai saat penjemputan atau pengantaran.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quiet Footer with Discreet Secret Admin Access -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand-col">
+          <span class="footer-logo" id="footer-brand-name">Chingu Laundry</span>
+          <p id="footer-desc" class="footer-desc">
+            Layanan laundry kiloan dan satuan express yang mengutamakan kebersihan higienis, kerapian setrika uap, dan ketepatan waktu antar-jemput.
+          </p>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-heading">Navigasi</h4>
+          <ul class="footer-list">
+            <li><a href="#keunggulan">Keunggulan Layanan</a></li>
+            <li><a href="#harga">Daftar Tarif Kiloan</a></li>
+            <li><a href="#kalkulator-pesan">Kalkulator &amp; Pemesanan</a></li>
+            <li><a href="#outlet">Jaringan Outlet</a></li>
+            <li><a href="#testimoni">Testimoni Pelanggan</a></li>
+            <li><a href="#faq">Pertanyaan Umum</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact-col">
+          <h4 class="footer-heading">Kontak Resmi</h4>
+          <ul class="footer-list">
+            <li>
+              <a id="footer-wa-link" href="https://wa.me/6281120081012" target="_blank" rel="noopener noreferrer">
+                WhatsApp: <span id="footer-wa-number" class="mono-num">0811-2008-1012</span>
+              </a>
+            </li>
+            <li id="footer-hours">Buka Setiap hari 07.00 – 20.00 WIB</li>
+            <li id="footer-closing-note">Gamsahamnida · Terima kasih telah mempercayai kami</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <p class="copyright-text">
+          &copy; <span id="copyright-year">2026</span> <span id="copyright-brand">Chingu Laundry Express</span>. Seluruh hak cipta dilindungi.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Floating Quick WhatsApp Action -->
+    <a
+      id="floating-wa-btn"
+      href="https://wa.me/6281120081012?text=Halo%20Chingu%20Laundry%2C%20saya%20ingin%20bertanya%20tentang%20layanan%20laundry."
+      target="_blank"
+      rel="noopener noreferrer"
+      class="floating-wa-btn"
+      aria-label="Chat WhatsApp Admin Laundry"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+      <span>Chat Admin</span>
+    </a>
+
+  </body>
+</html>

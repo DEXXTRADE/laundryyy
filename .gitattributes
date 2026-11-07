@@ -1,0 +1,7 @@
+# Ensure GitHub Linguist highlights HTML as primary repository language (red dot)
+*.ts linguist-detectable=false
+*.tsx linguist-detectable=false
+*.mjs linguist-vendored
+*.json linguist-vendored
+package.json linguist-vendored
+tests/** linguist-vendored

@@ -1,0 +1,8 @@
+{
+  "name": "Chingu Laundry Express",
+  "description": "Layanan laundry kiloan dan satuan express dengan konsep 1 mesin 1 pelanggan, antar-jemput 30 menit, kalkulator harga otomatis, dan pemesanan WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

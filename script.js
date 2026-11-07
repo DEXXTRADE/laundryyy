@@ -24,12 +24,12 @@
     // ------------------------------------------------------------------------
     // 1. INFORMASI UTAMA & KONTAK BISNIS
     // ------------------------------------------------------------------------
-    brandName: 'dexx Laundry',
+    brandName: 'dexxx Laundry',
     // Nomor WhatsApp tujuan order (awali dengan 62 atau 08, otomatis diformat):
     whatsappNumber: '6282276328839',
     operationalHours: 'Setiap hari 07.00 – 20.00 WIB',
     copyrightYear: '2026',
-    copyrightBrand: 'dexx Laundry Express',
+    copyrightBrand: 'dexxx Laundry Express',
 
     // ------------------------------------------------------------------------
     // 2. FOTO & GAMBAR WEBSITE

@@ -24,7 +24,7 @@
     // ------------------------------------------------------------------------
     // 1. INFORMASI UTAMA & KONTAK BISNIS
     // ------------------------------------------------------------------------
-    brandName: 'Chingu Laundry',
+    brandName: 'dexx Laundry',
     // Nomor WhatsApp tujuan order (awali dengan 62 atau 08, otomatis diformat):
     whatsappNumber: '6282276328839',
     operationalHours: 'Setiap hari 07.00 – 20.00 WIB',

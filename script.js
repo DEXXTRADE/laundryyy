@@ -29,7 +29,7 @@
     whatsappNumber: '6282276328839',
     operationalHours: 'Setiap hari 07.00 – 20.00 WIB',
     copyrightYear: '2026',
-    copyrightBrand: 'Chingu Laundry Express',
+    copyrightBrand: 'dexx Laundry Express',
 
     // ------------------------------------------------------------------------
     // 2. FOTO & GAMBAR WEBSITE

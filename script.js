@@ -455,14 +455,14 @@
     }
 
     if (Array.isArray(raw.heroMetrics) && raw.heroMetrics.length > 0) {
-      base.heroMetrics = [0, 1, 2].map(function (idx) {
-        var m = raw.heroMetrics[idx] || {};
-        var fb = LAUNDRY_CONFIG.heroMetrics[idx];
-        return {
-          value: typeof m.value === 'string' && m.value.trim() ? m.value.trim() : fb.value,
-          label: typeof m.label === 'string' && m.label.trim() ? m.label.trim() : fb.label,
-        };
-      });
+      base.heroMetrics = raw.heroMetrics
+        .filter(Boolean)
+        .map(function (m, idx) {
+          return {
+            value: typeof m.value === 'string' && m.value.trim() ? m.value.trim() : '0' + (idx + 1),
+            label: typeof m.label === 'string' && m.label.trim() ? m.label.trim() : 'Layanan Unggulan',
+          };
+        });
     }
 
     if (Array.isArray(raw.marqueeItems) && raw.marqueeItems.length > 0) {
@@ -507,9 +507,10 @@
           return s && typeof s.name === 'string' && s.name.trim() !== '';
         })
         .map(function (s, idx) {
+          var name = String(s.name).trim();
           return {
-            id: s.id || 'layanan-' + (idx + 1),
-            name: String(s.name).trim(),
+            id: s.id || slugify(name, 'layanan', idx),
+            name: name,
             description:
               typeof s.description === 'string' && s.description.trim() !== ''
                 ? s.description.trim()
@@ -523,12 +524,12 @@
 
     if (Array.isArray(raw.speeds) && raw.speeds.length > 0) {
       base.speeds = raw.speeds.map(function (sp, idx) {
-        var fallback = LAUNDRY_CONFIG.speeds[idx] || LAUNDRY_CONFIG.speeds[0];
+        var name = sp && sp.name ? String(sp.name).trim() : 'Kecepatan ' + (idx + 1);
         return {
-          id: sp.id || fallback.id,
-          name: sp.name || fallback.name,
-          eta: sp.eta || fallback.eta,
-          extraPerKg: Math.max(0, Number(sp.extraPerKg) || 0),
+          id: (sp && sp.id) || slugify(name, 'speed', idx),
+          name: name,
+          eta: sp && sp.eta ? String(sp.eta).trim() : 'Tepat Waktu',
+          extraPerKg: Math.max(0, Number(sp && sp.extraPerKg) || 0),
         };
       });
     }
@@ -2498,6 +2499,7 @@
     CONFIG: LAUNDRY_CONFIG,
     DEFAULT_CONFIG: LAUNDRY_CONFIG,
     mergeConfigWithDefaults: mergeConfigWithDefaults,
+    sanitizeConfig: mergeConfigWithDefaults,
     formatRupiah: formatRupiah,
     normalizeWhatsAppNumber: normalizeWhatsAppNumber,
     formatDisplayPhone: formatDisplayPhone,

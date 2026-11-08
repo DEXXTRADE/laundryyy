@@ -74,7 +74,7 @@
     // ------------------------------------------------------------------------
     // 5. KEUNGGULAN LAYANAN (4 Poin Utama)
     // ------------------------------------------------------------------------
-    featuresKicker: 'Standar Pelayanan Kami',
+    featuresKicker: 'Standar Pelayanan i',
     featuresTitle: 'Mengapa Harus Chingu Laundry?',
     featuresLead:
       'Dirancang untuk gaya hidup aktif yang mengutamakan kebersihan higienis, ketepatan waktu, dan perawatan serat kain yang lembut.',
@@ -334,10 +334,23 @@
     footerDesc:
       'Layanan laundry kiloan dan satuan express yang mengutamakan kebersihan higienis, kerapian setrika uap, dan ketepatan waktu antar-jemput.',
     footerClosingNote: 'Gamsahamnida · Terima kasih telah mempercayai kami',
+    adminPin: '123456',
+  };
+
+  /* Firebase Configuration (dari pengguna: web-wedding-4d4ce) */
+  var FIREBASE_CONFIG = {
+    apiKey: 'AIzaSyDmLSvUrOw0U_aLNkctFMKKo5AavJCHYc4',
+    authDomain: 'web-wedding-4d4ce.firebaseapp.com',
+    projectId: 'web-wedding-4d4ce',
+    storageBucket: 'web-wedding-4d4ce.firebasestorage.app',
+    messagingSenderId: '904409888717',
+    appId: '1:904409888717:web:bc5ec2d626e82be4067684',
+    measurementId: 'G-XNFMW594BJ',
   };
 
   /* Expose configuration globally so external scripts or tests can inspect it */
   root.LAUNDRY_CONFIG = LAUNDRY_CONFIG;
+  root.FIREBASE_CONFIG = FIREBASE_CONFIG;
 
   /* ========================================================================
      Pure Helper & Calculation Functions (Framework-Free & Unit-Tested)
@@ -345,6 +358,12 @@
 
   function cloneDeep(obj) {
     return JSON.parse(JSON.stringify(obj));
+  }
+
+  function slugify(text, fallbackPrefix, index) {
+    var str = String(text || '').trim().toLowerCase();
+    var clean = str.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return clean || (fallbackPrefix + '-' + ((index || 0) + 1));
   }
 
   function normalizeWhatsAppNumber(phone) {
@@ -380,6 +399,9 @@
       'brandName',
       'whatsappNumber',
       'operationalHours',
+      'copyrightYear',
+      'copyrightBrand',
+      'adminPin',
       'heroEyebrow',
       'heroTitle',
       'heroSubtitle',
@@ -807,12 +829,33 @@
         var ctaSpan = byId('hero-cta-btn').querySelector('span');
         if (ctaSpan) ctaSpan.textContent = appConfig.heroCtaText;
 
-        appConfig.heroMetrics.forEach(function (m, idx) {
-          var vEl = byId('metric-val-' + idx);
-          var lEl = byId('metric-lbl-' + idx);
-          if (vEl) vEl.textContent = m.value;
-          if (lEl) lEl.textContent = m.label;
-        });
+        var metricsContainer = byId('hero-metrics');
+        if (metricsContainer) {
+          metricsContainer.innerHTML = '';
+          appConfig.heroMetrics.forEach(function (m, idx) {
+            if (idx > 0) {
+              var div = document.createElement('div');
+              div.className = 'hero-metric-divider';
+              div.setAttribute('aria-hidden', 'true');
+              metricsContainer.appendChild(div);
+            }
+            var item = document.createElement('div');
+            item.className = 'hero-metric-item';
+
+            var strong = document.createElement('strong');
+            strong.className = 'metric-value';
+            strong.textContent = m.value;
+
+            var span = document.createElement('span');
+            span.className = 'metric-label';
+            span.textContent = m.label;
+
+            item.appendChild(strong);
+            item.appendChild(span);
+            metricsContainer.appendChild(item);
+          });
+        }
+
 
         // Marquee ticker (duplicated 2x for continuous smooth animation loop)
         var track = byId('marquee-track');
@@ -1537,6 +1580,908 @@
           });
         });
       }
+
+      /* ====================================================================
+         FIREBASE REAL-TIME CLOUD SYNCHRONIZATION (web-wedding-4d4ce)
+         ==================================================================== */
+      var firestoreDb = null;
+
+      function updateAdminBadge(status, text) {
+        var badge = byId('firebase-sync-badge');
+        if (!badge) return;
+        badge.className = 'sync-badge ' + (status === 'online' ? 'sync-online' : 'sync-saving');
+        badge.textContent = text;
+      }
+
+      function initFirebaseCloudSync() {
+        if (typeof firebase === 'undefined' || !firebase.initializeApp) {
+          updateAdminBadge('offline', 'Firebase: Offline (Mode Lokal)');
+          return;
+        }
+
+        try {
+          if (!firebase.apps || !firebase.apps.length) {
+            firebase.initializeApp(FIREBASE_CONFIG);
+          }
+          firestoreDb = firebase.firestore();
+
+          // Realtime listener multi-perangkat via onSnapshot
+          firestoreDb
+            .collection('dex_laundry_cms')
+            .doc('active_config')
+            .onSnapshot(
+              function (docSnap) {
+                if (docSnap.exists) {
+                  var remoteData = docSnap.data();
+                  if (remoteData && typeof remoteData === 'object') {
+                    appConfig = mergeConfigWithDefaults(remoteData);
+                    renderEntireSite();
+                    updateAdminBadge('online', 'Firebase Cloud: Terhubung & Realtime');
+                  }
+                } else {
+                  // Dokumen awal belum ada di Firebase, simpan konfigurasi dasar sebagai master
+                  firestoreDb
+                    .collection('dex_laundry_cms')
+                    .doc('active_config')
+                    .set(cloneDeep(appConfig), { merge: true })
+                    .catch(function (e) {
+                      console.warn('Firestore initial write notice:', e);
+                    });
+                }
+              },
+              function (err) {
+                console.warn('Firestore realtime sync notice:', err);
+                updateAdminBadge('offline', 'Firebase: Mode Lokal');
+              }
+            );
+        } catch (err) {
+          console.warn('Firebase init error:', err);
+          updateAdminBadge('offline', 'Firebase: Mode Lokal');
+        }
+      }
+
+      /* ====================================================================
+         SECRET ADMIN CONTROLLER (Tersembunyi dari Publik & Dilindungi PIN)
+         ==================================================================== */
+      var secretPinModal = byId('secret-pin-modal');
+      var secretAdminModal = byId('secret-admin-modal');
+
+      function openPinModal() {
+        if (!secretPinModal) return;
+        var pinInput = byId('admin-pin-input');
+        var errEl = byId('pin-error-msg');
+        if (pinInput) pinInput.value = '';
+        if (errEl) errEl.textContent = '';
+        secretPinModal.hidden = false;
+        setTimeout(function () {
+          if (pinInput) pinInput.focus();
+        }, 100);
+      }
+
+      function closePinModal() {
+        if (!secretPinModal) return;
+        secretPinModal.hidden = true;
+      }
+
+      function closeAdminModal() {
+        if (!secretAdminModal) return;
+        secretAdminModal.hidden = true;
+      }
+
+      // 1. Shortcut Keyboard: Ctrl + Shift + A (atau Cmd + Shift + A)
+      window.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+          e.preventDefault();
+          if (secretAdminModal && !secretAdminModal.hidden) {
+            closeAdminModal();
+          } else if (secretPinModal && !secretPinModal.hidden) {
+            closePinModal();
+          } else {
+            openPinModal();
+          }
+        }
+      });
+
+      // 2. Secret Triple Click Trigger pada teks copyright footer (Mobile / Touch Friendly)
+      var triggerEl = document.querySelector('.secret-admin-trigger');
+      var clickCount = 0;
+      var clickTimeout = null;
+      if (triggerEl) {
+        triggerEl.addEventListener('click', function () {
+          clickCount++;
+          clearTimeout(clickTimeout);
+          if (clickCount >= 3) {
+            clickCount = 0;
+            openPinModal();
+          } else {
+            clickTimeout = setTimeout(function () {
+              clickCount = 0;
+            }, 800);
+          }
+        });
+      }
+
+      // 3. Form Login PIN
+      var pinForm = byId('pin-auth-form');
+      if (pinForm) {
+        pinForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var enteredPin = (byId('admin-pin-input').value || '').trim();
+          var correctPin = String(appConfig.adminPin || '123456').trim();
+
+          if (enteredPin === correctPin) {
+            closePinModal();
+            openAdminModal();
+          } else {
+            var errEl = byId('pin-error-msg');
+            if (errEl) errEl.textContent = 'PIN keamanan salah, silakan coba lagi.';
+            byId('admin-pin-input').value = '';
+            byId('admin-pin-input').focus();
+          }
+        });
+      }
+
+      if (byId('pin-cancel-btn')) {
+        byId('pin-cancel-btn').addEventListener('click', closePinModal);
+      }
+      if (byId('admin-close-x-btn')) {
+        byId('admin-close-x-btn').addEventListener('click', closeAdminModal);
+      }
+      if (byId('admin-discard-btn')) {
+        byId('admin-discard-btn').addEventListener('click', closeAdminModal);
+      }
+
+      // 4. Tab Navigation inside Admin Panel
+      document.querySelectorAll('.admin-tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var targetTabId = btn.getAttribute('data-tab');
+          document.querySelectorAll('.admin-tab-btn').forEach(function (b) {
+            b.classList.remove('is-active');
+          });
+          document.querySelectorAll('.admin-tab-pane').forEach(function (pane) {
+            pane.classList.remove('is-active');
+          });
+
+          btn.classList.add('is-active');
+          var targetPane = byId(targetTabId);
+          if (targetPane) targetPane.classList.add('is-active');
+        });
+      });
+
+      // 5. Image Compression & Local Upload Handler (Offscreen Canvas ke Base64)
+      function handleImageUpload(file, inputTargetId, previewImgId) {
+        if (!file || !file.type.match(/^image\//)) return;
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          var img = new Image();
+          img.onload = function () {
+            var canvas = document.createElement('canvas');
+            var maxDim = 1200;
+            var w = img.width;
+            var h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+            var inp = byId(inputTargetId);
+            var prev = byId(previewImgId);
+            if (inp) inp.value = dataUrl;
+            if (prev) prev.src = dataUrl;
+          };
+          img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      ['hero', 'promo', 'facility', 'outlet'].forEach(function (slot) {
+        var fileInp = byId('adm-file-' + slot);
+        if (fileInp) {
+          fileInp.addEventListener('change', function (e) {
+            if (e.target.files && e.target.files[0]) {
+              handleImageUpload(e.target.files[0], 'adm-img-' + slot, 'preview-img-' + slot);
+            }
+          });
+        }
+        var textInp = byId('adm-img-' + slot);
+        if (textInp) {
+          textInp.addEventListener('input', function () {
+            var prev = byId('preview-img-' + slot);
+            if (prev) prev.src = textInp.value;
+          });
+        }
+      });
+
+      // 6. Dynamic Card List Editors (Services, Outlets, Testimonials, FAQs)
+      var workingServices = [];
+      var workingOutlets = [];
+      var workingTestimonials = [];
+      var workingFaqs = [];
+
+      function renderAdminServicesList() {
+        var listEl = byId('adm-services-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+
+        workingServices.forEach(function (srv, idx) {
+          var card = document.createElement('div');
+          card.className = 'admin-item-card';
+
+          var header = document.createElement('div');
+          header.className = 'admin-item-card-header';
+          header.innerHTML =
+            '<span class="admin-item-card-title">Layanan #' +
+            (idx + 1) +
+            '</span>' +
+            '<button type="button" class="admin-btn-delete" data-idx="' +
+            idx +
+            '">Hapus Layanan</button>';
+
+          var body = document.createElement('div');
+          body.className = 'admin-form-grid';
+          body.innerHTML =
+            '<div>' +
+            '<label class="admin-field-label">Nama Layanan</label>' +
+            '<input type="text" class="admin-input adm-srv-name" value="' +
+            (srv.name || '') +
+            '" />' +
+            '</div>' +
+            '<div>' +
+            '<label class="admin-field-label">Tarif per Kg (Rp)</label>' +
+            '<input type="number" class="admin-input adm-srv-price" value="' +
+            (srv.pricePerKg || 8000) +
+            '" min="1000" step="500" />' +
+            '</div>' +
+            '<div>' +
+            '<label class="admin-field-label">Minimal Order (Kg)</label>' +
+            '<input type="number" class="admin-input adm-srv-minkg" value="' +
+            (srv.minKg || 1) +
+            '" min="1" max="50" />' +
+            '</div>' +
+            '<div class="admin-field-full">' +
+            '<label class="admin-field-label">Deskripsi Layanan</label>' +
+            '<textarea class="admin-textarea adm-srv-desc" rows="2">' +
+            (srv.description || '') +
+            '</textarea>' +
+            '</div>';
+
+          header.querySelector('.admin-btn-delete').addEventListener('click', function () {
+            if (workingServices.length <= 1) {
+              alert('Minimal harus ada 1 layanan kiloan.');
+              return;
+            }
+            workingServices.splice(idx, 1);
+            renderAdminServicesList();
+          });
+
+          card.appendChild(header);
+          card.appendChild(body);
+          listEl.appendChild(card);
+        });
+      }
+
+      function renderAdminOutletsList() {
+        var listEl = byId('adm-outlets-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+
+        workingOutlets.forEach(function (out, idx) {
+          var card = document.createElement('div');
+          card.className = 'admin-item-card';
+
+          var header = document.createElement('div');
+          header.className = 'admin-item-card-header';
+          header.innerHTML =
+            '<span class="admin-item-card-title">Cabang #' +
+            (idx + 1) +
+            '</span>' +
+            '<button type="button" class="admin-btn-delete" data-idx="' +
+            idx +
+            '">Hapus Cabang</button>';
+
+          var body = document.createElement('div');
+          body.className = 'admin-form-grid';
+          body.innerHTML =
+            '<div>' +
+            '<label class="admin-field-label">Nama Kota / Wilayah</label>' +
+            '<input type="text" class="admin-input adm-out-city" value="' +
+            (out.city || '') +
+            '" placeholder="Bandung / Jakarta / dll" />' +
+            '</div>' +
+            '<div>' +
+            '<label class="admin-field-label">Nama Outlet</label>' +
+            '<input type="text" class="admin-input adm-out-name" value="' +
+            (out.name || '') +
+            '" placeholder="dex Laundry Dago" />' +
+            '</div>' +
+            '<div class="admin-field-full">' +
+            '<label class="admin-field-label">Alamat Lengkap</label>' +
+            '<input type="text" class="admin-input adm-out-address" value="' +
+            (out.address || '') +
+            '" placeholder="Jl. Raya No. 12" />' +
+            '</div>';
+
+          header.querySelector('.admin-btn-delete').addEventListener('click', function () {
+            if (workingOutlets.length <= 1) {
+              alert('Minimal harus ada 1 cabang outlet.');
+              return;
+            }
+            workingOutlets.splice(idx, 1);
+            renderAdminOutletsList();
+          });
+
+          card.appendChild(header);
+          card.appendChild(body);
+          listEl.appendChild(card);
+        });
+      }
+
+      function renderAdminTestimonialsList() {
+        var listEl = byId('adm-testimonials-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+
+        workingTestimonials.forEach(function (t, idx) {
+          var card = document.createElement('div');
+          card.className = 'admin-item-card';
+
+          var header = document.createElement('div');
+          header.className = 'admin-item-card-header';
+          header.innerHTML =
+            '<span class="admin-item-card-title">Ulasan #' +
+            (idx + 1) +
+            '</span>' +
+            '<button type="button" class="admin-btn-delete" data-idx="' +
+            idx +
+            '">Hapus Ulasan</button>';
+
+          var body = document.createElement('div');
+          body.className = 'admin-form-grid';
+          body.innerHTML =
+            '<div>' +
+            '<label class="admin-field-label">Nama Pelanggan</label>' +
+            '<input type="text" class="admin-input adm-testi-name" value="' +
+            (t.name || '') +
+            '" />' +
+            '</div>' +
+            '<div>' +
+            '<label class="admin-field-label">Profesi / Domisili</label>' +
+            '<input type="text" class="admin-input adm-testi-role" value="' +
+            (t.role || '') +
+            '" />' +
+            '</div>' +
+            '<div>' +
+            '<label class="admin-field-label">Rating Bintang</label>' +
+            '<select class="admin-select adm-testi-rating">' +
+            '<option value="5"' +
+            (t.rating === 5 ? ' selected' : '') +
+            '>⭐⭐⭐⭐⭐ (5 Bintang)</option>' +
+            '<option value="4"' +
+            (t.rating === 4 ? ' selected' : '') +
+            '>⭐⭐⭐⭐ (4 Bintang)</option>' +
+            '<option value="3"' +
+            (t.rating === 3 ? ' selected' : '') +
+            '>⭐⭐⭐ (3 Bintang)</option>' +
+            '</select>' +
+            '</div>' +
+            '<div class="admin-field-full">' +
+            '<label class="admin-field-label">Isi Kutipan Ulasan</label>' +
+            '<textarea class="admin-textarea adm-testi-quote" rows="2">' +
+            (t.quote || '') +
+            '</textarea>' +
+            '</div>';
+
+          header.querySelector('.admin-btn-delete').addEventListener('click', function () {
+            if (workingTestimonials.length <= 1) {
+              alert('Minimal harus ada 1 testimoni.');
+              return;
+            }
+            workingTestimonials.splice(idx, 1);
+            renderAdminTestimonialsList();
+          });
+
+          card.appendChild(header);
+          card.appendChild(body);
+          listEl.appendChild(card);
+        });
+      }
+
+      function renderAdminFaqsList() {
+        var listEl = byId('adm-faqs-list');
+        if (!listEl) return;
+        listEl.innerHTML = '';
+
+        workingFaqs.forEach(function (faq, idx) {
+          var card = document.createElement('div');
+          card.className = 'admin-item-card';
+
+          var header = document.createElement('div');
+          header.className = 'admin-item-card-header';
+          header.innerHTML =
+            '<span class="admin-item-card-title">Tanya Jawab #' +
+            (idx + 1) +
+            '</span>' +
+            '<button type="button" class="admin-btn-delete" data-idx="' +
+            idx +
+            '">Hapus FAQ</button>';
+
+          var body = document.createElement('div');
+          body.className = 'admin-form-grid';
+          body.innerHTML =
+            '<div class="admin-field-full">' +
+            '<label class="admin-field-label">Pertanyaan</label>' +
+            '<input type="text" class="admin-input adm-faq-question" value="' +
+            (faq.question || '') +
+            '" />' +
+            '</div>' +
+            '<div class="admin-field-full">' +
+            '<label class="admin-field-label">Jawaban</label>' +
+            '<textarea class="admin-textarea adm-faq-answer" rows="2">' +
+            (faq.answer || '') +
+            '</textarea>' +
+            '</div>';
+
+          header.querySelector('.admin-btn-delete').addEventListener('click', function () {
+            if (workingFaqs.length <= 1) {
+              alert('Minimal harus ada 1 pertanyaan FAQ.');
+              return;
+            }
+            workingFaqs.splice(idx, 1);
+            renderAdminFaqsList();
+          });
+
+          card.appendChild(header);
+          card.appendChild(body);
+          listEl.appendChild(card);
+        });
+      }
+
+      // Add item triggers
+      if (byId('adm-add-service-btn')) {
+        byId('adm-add-service-btn').addEventListener('click', function () {
+          workingServices.push({
+            id: 'layanan-' + Date.now(),
+            name: 'Layanan Tambahan',
+            description: 'Cuci bersih, higienis 1 mesin 1 pelanggan.',
+            pricePerKg: 8500,
+            minKg: 1,
+          });
+          renderAdminServicesList();
+        });
+      }
+
+      if (byId('adm-add-outlet-btn')) {
+        byId('adm-add-outlet-btn').addEventListener('click', function () {
+          workingOutlets.push({
+            id: 'outlet-' + Date.now(),
+            city: 'Bandung',
+            name: 'Cabang Baru',
+            address: 'Jl. Utama Baru No. 10',
+          });
+          renderAdminOutletsList();
+        });
+      }
+
+      if (byId('adm-add-testimonial-btn')) {
+        byId('adm-add-testimonial-btn').addEventListener('click', function () {
+          workingTestimonials.push({
+            id: 'testi-' + Date.now(),
+            name: 'Pelanggan Puas',
+            role: 'Pelanggan Setia',
+            rating: 5,
+            quote: 'Cucian selalu bersih, tepat waktu, dan wanginya segar.',
+          });
+          renderAdminTestimonialsList();
+        });
+      }
+
+      if (byId('adm-add-faq-btn')) {
+        byId('adm-add-faq-btn').addEventListener('click', function () {
+          workingFaqs.push({
+            id: 'faq-' + Date.now(),
+            question: 'Pertanyaan baru mengenai layanan?',
+            answer: 'Jawaban detail mengenai prosedur dan keunggulan layanan laundry kami.',
+          });
+          renderAdminFaqsList();
+        });
+      }
+
+      // 7. Render Features & Process Editor Lists
+      function renderAdminFeaturesAndProcess() {
+        var fList = byId('adm-features-list');
+        if (fList && appConfig.features) {
+          fList.innerHTML = '';
+          appConfig.features.forEach(function (feat, idx) {
+            var card = document.createElement('div');
+            card.className = 'admin-item-card';
+            card.innerHTML =
+              '<div class="admin-item-card-header"><span class="admin-item-card-title">Pilar Keunggulan #' +
+              (idx + 1) +
+              '</span></div>' +
+              '<div class="admin-form-grid">' +
+              '<div><label class="admin-field-label">Judul Keunggulan</label><input type="text" class="admin-input adm-feat-title" value="' +
+              (feat.title || '') +
+              '" /></div>' +
+              '<div class="admin-field-full"><label class="admin-field-label">Deskripsi</label><textarea class="admin-textarea adm-feat-desc" rows="2">' +
+              (feat.description || '') +
+              '</textarea></div>' +
+              '</div>';
+            fList.appendChild(card);
+          });
+        }
+
+        var pList = byId('adm-process-list');
+        if (pList && appConfig.processSteps) {
+          pList.innerHTML = '';
+          appConfig.processSteps.forEach(function (step, idx) {
+            var card = document.createElement('div');
+            card.className = 'admin-item-card';
+            card.innerHTML =
+              '<div class="admin-item-card-header"><span class="admin-item-card-title">Langkah #' +
+              (idx + 1) +
+              '</span></div>' +
+              '<div class="admin-form-grid">' +
+              '<div><label class="admin-field-label">Judul Langkah</label><input type="text" class="admin-input adm-step-title" value="' +
+              (step.title || '') +
+              '" /></div>' +
+              '<div class="admin-field-full"><label class="admin-field-label">Deskripsi</label><textarea class="admin-textarea adm-step-desc" rows="2">' +
+              (step.description || '') +
+              '</textarea></div>' +
+              '</div>';
+            pList.appendChild(card);
+          });
+        }
+
+        var spList = byId('adm-speeds-list');
+        if (spList && appConfig.speeds) {
+          spList.innerHTML = '';
+          appConfig.speeds.forEach(function (sp, idx) {
+            var card = document.createElement('div');
+            card.className = 'admin-item-card';
+            card.innerHTML =
+              '<div class="admin-item-card-header"><span class="admin-item-card-title">Paket: ' +
+              (sp.name || 'Kecepatan') +
+              '</span></div>' +
+              '<div class="admin-form-grid">' +
+              '<div><label class="admin-field-label">Nama Kecepatan</label><input type="text" class="admin-input adm-sp-name" value="' +
+              (sp.name || '') +
+              '" /></div>' +
+              '<div><label class="admin-field-label">Durasi Selesai (ETA)</label><input type="text" class="admin-input adm-sp-eta" value="' +
+              (sp.eta || '') +
+              '" placeholder="3 Hari / 24 Jam / 6 Jam" /></div>' +
+              '<div><label class="admin-field-label">Biaya Tambahan per Kg (Rp)</label><input type="number" class="admin-input adm-sp-extra" value="' +
+              (sp.extraPerKg || 0) +
+              '" min="0" step="500" /></div>' +
+              '</div>';
+            spList.appendChild(card);
+          });
+        }
+      }
+
+      // 8. Open Admin Modal & Populate Data
+      function openAdminModal() {
+        if (!secretAdminModal) return;
+        secretAdminModal.hidden = false;
+
+        // Reset to first tab
+        var firstTab = document.querySelector('.admin-tab-btn[data-tab="tab-brand"]');
+        if (firstTab) firstTab.click();
+
+        // 1. Brand
+        if (byId('adm-brand-name')) byId('adm-brand-name').value = appConfig.brandName;
+        if (byId('adm-wa-number')) byId('adm-wa-number').value = appConfig.whatsappNumber;
+        if (byId('adm-operational-hours')) byId('adm-operational-hours').value = appConfig.operationalHours;
+        if (byId('adm-copyright-brand'))
+          byId('adm-copyright-brand').value = appConfig.copyrightBrand || appConfig.brandName + ' Express';
+        if (byId('adm-footer-desc')) byId('adm-footer-desc').value = appConfig.footerDesc || '';
+
+        // 2. Hero
+        if (byId('adm-hero-eyebrow')) byId('adm-hero-eyebrow').value = appConfig.heroEyebrow || '';
+        if (byId('adm-hero-title')) byId('adm-hero-title').value = appConfig.heroTitle || '';
+        if (byId('adm-hero-subtitle')) byId('adm-hero-subtitle').value = appConfig.heroSubtitle || '';
+        if (byId('adm-hero-cta')) byId('adm-hero-cta').value = appConfig.heroCtaText || '';
+        if (byId('adm-hero-caption-title'))
+          byId('adm-hero-caption-title').value = appConfig.heroCaptionTitle || '';
+
+        [0, 1, 2].forEach(function (idx) {
+          var m = (appConfig.heroMetrics && appConfig.heroMetrics[idx]) || {};
+          if (byId('adm-metric-val-' + idx)) byId('adm-metric-val-' + idx).value = m.value || '';
+          if (byId('adm-metric-lbl-' + idx)) byId('adm-metric-lbl-' + idx).value = m.label || '';
+        });
+
+        // 3. Promo
+        if (byId('adm-promo-enabled'))
+          byId('adm-promo-enabled').value = appConfig.promoEnabled ? 'true' : 'false';
+        if (byId('adm-promo-code')) byId('adm-promo-code').value = appConfig.promoCode || '';
+        if (byId('adm-promo-discount'))
+          byId('adm-promo-discount').value = appConfig.promoDiscountPercent || 10;
+        if (byId('adm-promo-card-title'))
+          byId('adm-promo-card-title').value = appConfig.promoCardTitle || '';
+        if (byId('adm-promo-text')) byId('adm-promo-text').value = appConfig.promoText || '';
+        if (byId('adm-promo-card-desc'))
+          byId('adm-promo-card-desc').value = appConfig.promoCardDesc || '';
+
+        // 4. Features & Process
+        if (byId('adm-features-kicker')) byId('adm-features-kicker').value = appConfig.featuresKicker || '';
+        if (byId('adm-features-title')) byId('adm-features-title').value = appConfig.featuresTitle || '';
+        if (byId('adm-features-lead')) byId('adm-features-lead').value = appConfig.featuresLead || '';
+
+        if (byId('adm-process-kicker')) byId('adm-process-kicker').value = appConfig.processKicker || '';
+        if (byId('adm-process-title')) byId('adm-process-title').value = appConfig.processTitle || '';
+        if (byId('adm-process-lead')) byId('adm-process-lead').value = appConfig.processLead || '';
+
+        renderAdminFeaturesAndProcess();
+
+        // 5. Fragrances
+        if (byId('adm-fragrances-text')) {
+          byId('adm-fragrances-text').value = appConfig.fragrances
+            ? appConfig.fragrances.join(', ')
+            : 'Sakura Bloom, Fresh Cotton, Ocean Breeze, Tanpa Parfum';
+        }
+
+        // 6. Testimonials kicker & title
+        if (byId('adm-testi-kicker'))
+          byId('adm-testi-kicker').value = appConfig.testimonialsKicker || 'Kepercayaan Pelanggan';
+        if (byId('adm-testi-title'))
+          byId('adm-testi-title').value = appConfig.testimonialsTitle || 'Pengalaman Pelanggan Setia Kami';
+
+        // 7. FAQs kicker & title
+        if (byId('adm-faq-kicker')) byId('adm-faq-kicker').value = appConfig.faqKicker || 'Informasi Umum';
+        if (byId('adm-faq-title'))
+          byId('adm-faq-title').value = appConfig.faqTitle || 'Pertanyaan yang Sering Diajukan';
+
+        // 8. Dynamic list clones
+        workingServices = cloneDeep(appConfig.services || []);
+        workingOutlets = cloneDeep(appConfig.outlets || []);
+        workingTestimonials = cloneDeep(appConfig.testimonials || []);
+        workingFaqs = cloneDeep(appConfig.faqs || []);
+
+        renderAdminServicesList();
+        renderAdminOutletsList();
+        renderAdminTestimonialsList();
+        renderAdminFaqsList();
+
+        // 9. Images
+        ['hero', 'promo', 'facility', 'outlet'].forEach(function (slot) {
+          var val = (appConfig.images && appConfig.images[slot]) || '';
+          if (byId('adm-img-' + slot)) byId('adm-img-' + slot).value = val;
+          if (byId('preview-img-' + slot)) byId('preview-img-' + slot).src = val;
+        });
+
+        // 10. Security PIN
+        if (byId('adm-security-pin'))
+          byId('adm-security-pin').value = appConfig.adminPin || '123456';
+      }
+
+      // 9. Save All Changes to Cloud Firestore
+      if (byId('admin-save-cloud-btn')) {
+        byId('admin-save-cloud-btn').addEventListener('click', function () {
+          var saveBtn = byId('admin-save-cloud-btn');
+          var statusText = byId('admin-save-status');
+          saveBtn.disabled = true;
+          updateAdminBadge('saving', 'Menyimpan...');
+          if (statusText) statusText.textContent = 'Menyimpan perubahan ke Firebase Cloud...';
+
+          // Kumpulkan data brand
+          var newConfig = cloneDeep(appConfig);
+          newConfig.brandName = byId('adm-brand-name').value.trim() || 'dex Laundry';
+          newConfig.whatsappNumber = byId('adm-wa-number').value.trim() || '6282276328839';
+          newConfig.operationalHours = byId('adm-operational-hours').value.trim();
+          newConfig.copyrightBrand = byId('adm-copyright-brand').value.trim();
+          newConfig.footerDesc = byId('adm-footer-desc').value.trim();
+
+          // Hero
+          newConfig.heroEyebrow = byId('adm-hero-eyebrow').value.trim();
+          newConfig.heroTitle = byId('adm-hero-title').value.trim();
+          newConfig.heroSubtitle = byId('adm-hero-subtitle').value.trim();
+          newConfig.heroCtaText = byId('adm-hero-cta').value.trim();
+          newConfig.heroCaptionTitle = byId('adm-hero-caption-title').value.trim();
+
+          newConfig.heroMetrics = [0, 1, 2].map(function (idx) {
+            return {
+              value: (byId('adm-metric-val-' + idx).value || '').trim(),
+              label: (byId('adm-metric-lbl-' + idx).value || '').trim(),
+            };
+          });
+
+          // Promo
+          newConfig.promoEnabled = byId('adm-promo-enabled').value === 'true';
+          newConfig.promoCode = byId('adm-promo-code').value.trim().toUpperCase();
+          newConfig.promoDiscountPercent = parseInt(byId('adm-promo-discount').value, 10) || 10;
+          newConfig.promoCardTitle = byId('adm-promo-card-title').value.trim();
+          newConfig.promoText = byId('adm-promo-text').value.trim();
+          newConfig.promoCardDesc = byId('adm-promo-card-desc').value.trim();
+
+          // Features
+          newConfig.featuresKicker = byId('adm-features-kicker').value.trim();
+          newConfig.featuresTitle = byId('adm-features-title').value.trim();
+          newConfig.featuresLead = byId('adm-features-lead').value.trim();
+          var featCards = document.querySelectorAll('#adm-features-list .admin-item-card');
+          newConfig.features = Array.prototype.map.call(featCards, function (card, idx) {
+            return {
+              id: 'fitur-' + (idx + 1),
+              title: (card.querySelector('.adm-feat-title').value || '').trim(),
+              description: (card.querySelector('.adm-feat-desc').value || '').trim(),
+            };
+          });
+
+          // Process
+          newConfig.processKicker = byId('adm-process-kicker').value.trim();
+          newConfig.processTitle = byId('adm-process-title').value.trim();
+          newConfig.processLead = byId('adm-process-lead').value.trim();
+          var procCards = document.querySelectorAll('#adm-process-list .admin-item-card');
+          newConfig.processSteps = Array.prototype.map.call(procCards, function (card) {
+            return {
+              title: (card.querySelector('.adm-step-title').value || '').trim(),
+              description: (card.querySelector('.adm-step-desc').value || '').trim(),
+            };
+          });
+
+          // Speeds
+          var spCards = document.querySelectorAll('#adm-speeds-list .admin-item-card');
+          if (spCards.length > 0) {
+            newConfig.speeds = Array.prototype.map.call(spCards, function (card, idx) {
+              var oldSp = appConfig.speeds[idx] || {};
+              return {
+                id: oldSp.id || 'speed-' + (idx + 1),
+                name: (card.querySelector('.adm-sp-name').value || '').trim(),
+                eta: (card.querySelector('.adm-sp-eta').value || '').trim(),
+                extraPerKg: parseInt(card.querySelector('.adm-sp-extra').value, 10) || 0,
+              };
+            });
+          }
+
+          // Fragrances
+          var fragRaw = byId('adm-fragrances-text').value;
+          newConfig.fragrances = fragRaw
+            .split(',')
+            .map(function (f) {
+              return f.trim();
+            })
+            .filter(Boolean);
+
+          // Services
+          var srvCards = document.querySelectorAll('#adm-services-list .admin-item-card');
+          newConfig.services = Array.prototype.map.call(srvCards, function (card, idx) {
+            var name = (card.querySelector('.adm-srv-name').value || '').trim();
+            return {
+              id: slugify(name, 'srv', idx),
+              name: name,
+              pricePerKg: parseInt(card.querySelector('.adm-srv-price').value, 10) || 8000,
+              minKg: parseInt(card.querySelector('.adm-srv-minkg').value, 10) || 1,
+              description: (card.querySelector('.adm-srv-desc').value || '').trim(),
+            };
+          });
+
+          // Outlets
+          var outCards = document.querySelectorAll('#adm-outlets-list .admin-item-card');
+          newConfig.outlets = Array.prototype.map.call(outCards, function (card, idx) {
+            var name = (card.querySelector('.adm-out-name').value || '').trim();
+            return {
+              id: slugify(name, 'out', idx),
+              city: (card.querySelector('.adm-out-city').value || '').trim(),
+              name: name,
+              address: (card.querySelector('.adm-out-address').value || '').trim(),
+            };
+          });
+
+          // Testimonials
+          newConfig.testimonialsKicker = byId('adm-testi-kicker').value.trim();
+          newConfig.testimonialsTitle = byId('adm-testi-title').value.trim();
+          var testiCards = document.querySelectorAll('#adm-testimonials-list .admin-item-card');
+          newConfig.testimonials = Array.prototype.map.call(testiCards, function (card, idx) {
+            return {
+              id: 'testi-' + (idx + 1),
+              name: (card.querySelector('.adm-testi-name').value || '').trim(),
+              role: (card.querySelector('.adm-testi-role').value || '').trim(),
+              rating: parseInt(card.querySelector('.adm-testi-rating').value, 10) || 5,
+              quote: (card.querySelector('.adm-testi-quote').value || '').trim(),
+            };
+          });
+
+          // FAQs
+          newConfig.faqKicker = byId('adm-faq-kicker').value.trim();
+          newConfig.faqTitle = byId('adm-faq-title').value.trim();
+          var faqCards = document.querySelectorAll('#adm-faqs-list .admin-item-card');
+          newConfig.faqs = Array.prototype.map.call(faqCards, function (card, idx) {
+            return {
+              id: 'faq-' + (idx + 1),
+              question: (card.querySelector('.adm-faq-question').value || '').trim(),
+              answer: (card.querySelector('.adm-faq-answer').value || '').trim(),
+            };
+          });
+
+          // Images
+          newConfig.images = {
+            hero: byId('adm-img-hero').value.trim() || appConfig.images.hero,
+            promo: byId('adm-img-promo').value.trim() || appConfig.images.promo,
+            facility: byId('adm-img-facility').value.trim() || appConfig.images.facility,
+            outlet: byId('adm-img-outlet').value.trim() || appConfig.images.outlet,
+          };
+
+          // Security PIN
+          var newPin = byId('adm-security-pin').value.trim();
+          if (newPin) newConfig.adminPin = newPin;
+
+          // Merge & Validasi
+          var merged = mergeConfigWithDefaults(newConfig);
+          appConfig = merged;
+          renderEntireSite();
+
+          // Simpan ke Cloud Firestore jika terhubung
+          if (firestoreDb) {
+            firestoreDb
+              .collection('dex_laundry_cms')
+              .doc('active_config')
+              .set(cloneDeep(merged), { merge: true })
+              .then(function () {
+                saveBtn.disabled = false;
+                updateAdminBadge('online', 'Firebase Cloud: Tersimpan!');
+                if (statusText) {
+                  statusText.textContent =
+                    'Perubahan berhasil disimpan ke Cloud Firebase! Semua perangkat yang membuka website langsung tersinkronisasi.';
+                }
+                setTimeout(function () {
+                  closeAdminModal();
+                }, 1200);
+              })
+              .catch(function (err) {
+                console.warn('Gagal menyimpan ke Firestore:', err);
+                saveBtn.disabled = false;
+                updateAdminBadge('offline', 'Gagal Simpan ke Cloud');
+                if (statusText) {
+                  statusText.textContent =
+                    'Perubahan tersimpan lokal. Periksa koneksi internet atau izin Firestore: ' + err.message;
+                }
+              });
+          } else {
+            saveBtn.disabled = false;
+            updateAdminBadge('offline', 'Tersimpan Lokal');
+            if (statusText) {
+              statusText.textContent =
+                'Perubahan tersimpan di memori browser. (Firebase SDK belum dimuat).';
+            }
+            setTimeout(function () {
+              closeAdminModal();
+            }, 1200);
+          }
+        });
+      }
+
+      // 10. Reset to Default
+      if (byId('admin-reset-default-btn')) {
+        byId('admin-reset-default-btn').addEventListener('click', function () {
+          if (confirm('Apakah Anda yakin ingin mengembalikan seluruh isi website ke konfigurasi awal?')) {
+            appConfig = cloneDeep(LAUNDRY_CONFIG);
+            renderEntireSite();
+            if (firestoreDb) {
+              firestoreDb
+                .collection('dex_laundry_cms')
+                .doc('active_config')
+                .set(cloneDeep(LAUNDRY_CONFIG))
+                .then(function () {
+                  alert('Website berhasil dikembalikan ke pengaturan awal dan disinkronkan ke Firebase.');
+                  openAdminModal();
+                });
+            } else {
+              openAdminModal();
+            }
+          }
+        });
+      }
+
+      // Inisialisasi Sinkronisasi Realtime Cloud Firebase
+      initFirebaseCloudSync();
 
       /* --------------------------------------------------------------------
          Initial Page Render & Lucide Enhancement

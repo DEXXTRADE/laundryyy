@@ -2055,3 +2055,542 @@ select.field-control {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   Secret Admin Panel & PIN Authentication Modal (Tersembunyi dari Publik)
+   ========================================================================== */
+
+/* Trigger rahasia footer (tampilan kursor standar agar tidak mencurigakan) */
+.secret-admin-trigger {
+  cursor: default;
+  user-select: none;
+}
+
+/* Backdrop Modal Universal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(18, 38, 32, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.modal-overlay[hidden] {
+  display: none !important;
+}
+
+/* Modal PIN Login Card */
+.pin-modal-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.35);
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 28px;
+  text-align: center;
+  border: 1px solid var(--color-border);
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.pin-modal-icon {
+  width: 54px;
+  height: 54px;
+  background-color: var(--color-teal-50);
+  color: var(--color-teal-700);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--color-teal-200);
+}
+
+.pin-modal-title {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: var(--color-ink-900);
+  margin-bottom: 6px;
+}
+
+.pin-modal-desc {
+  font-size: 0.875rem;
+  color: var(--color-ink-700);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.pin-input-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.pin-input {
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  letter-spacing: 0.25em;
+  padding: 12px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-teal-50);
+  color: var(--color-ink-900);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pin-input:focus {
+  outline: none;
+  border-color: var(--color-teal-600);
+  box-shadow: 0 0 0 4px rgba(26, 92, 79, 0.15);
+  background-color: #ffffff;
+}
+
+.pin-error-msg {
+  color: var(--color-error-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-top: 8px;
+  min-height: 20px;
+}
+
+.pin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pin-hint {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-top: 14px;
+}
+
+/* ==========================================================================
+   Full Admin CMS Modal
+   ========================================================================== */
+.admin-modal-window {
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 1140px;
+  height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background-color: var(--color-teal-900);
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.admin-header-title-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-header-title {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+}
+
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sync-badge::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.sync-badge.sync-online {
+  background-color: rgba(39, 103, 73, 0.25);
+  color: #68d391;
+  border: 1px solid #38a169;
+}
+
+.sync-badge.sync-online::before {
+  background-color: #48bb78;
+  box-shadow: 0 0 8px #48bb78;
+}
+
+.sync-badge.sync-saving {
+  background-color: rgba(221, 107, 32, 0.25);
+  color: #fbd38d;
+  border: 1px solid #dd6b20;
+}
+
+.sync-badge.sync-saving::before {
+  background-color: #ed8936;
+}
+
+.admin-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.admin-close-btn:hover {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Action Toolbar */
+.admin-action-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 24px;
+  background-color: var(--color-teal-50);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-status-text {
+  font-size: 0.8125rem;
+  color: var(--color-ink-700);
+  font-weight: 600;
+}
+
+.admin-actions-btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Modal Body Layout: Sidebar Tabs + Content Area */
+.admin-modal-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.admin-sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background-color: #f7fafc;
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-ink-700);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.admin-tab-btn:hover {
+  background-color: var(--color-teal-50);
+  color: var(--color-teal-700);
+}
+
+.admin-tab-btn.is-active {
+  background-color: var(--color-teal-700);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.admin-tab-content-area {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+
+.admin-tab-pane {
+  display: none;
+}
+
+.admin-tab-pane.is-active {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.admin-section-heading {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-ink-900);
+  margin-bottom: 4px;
+}
+
+.admin-section-sub {
+  font-size: 0.875rem;
+  color: var(--color-ink-700);
+  margin-bottom: 24px;
+}
+
+/* Form Grid & Input Fields inside Admin */
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 20px;
+  margin-bottom: 24px;
+}
+
+.admin-field-full {
+  grid-column: 1 / -1;
+}
+
+.admin-field-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-ink-900);
+  margin-bottom: 6px;
+}
+
+.admin-field-help {
+  font-size: 0.75rem;
+  color: #718096;
+  margin-top: 4px;
+}
+
+.admin-input,
+.admin-textarea,
+.admin-select {
+  width: 100%;
+  padding: 9px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  color: var(--color-ink-900);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-input:focus,
+.admin-textarea:focus,
+.admin-select:focus {
+  outline: none;
+  border-color: var(--color-teal-600);
+  box-shadow: 0 0 0 3px rgba(26, 92, 79, 0.12);
+}
+
+.admin-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Dynamic Item Cards (Services, Outlets, Testimonials, FAQs) */
+.admin-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.admin-item-card {
+  background-color: #fafbfb;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+
+.admin-item-card:hover {
+  border-color: var(--color-teal-300);
+}
+
+.admin-item-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.admin-item-card-title {
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-teal-800);
+}
+
+.admin-btn-delete {
+  background: transparent;
+  border: 1px solid rgba(197, 48, 48, 0.3);
+  color: #c53030;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.admin-btn-delete:hover {
+  background-color: #fff5f5;
+  border-color: #c53030;
+}
+
+.admin-btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-teal-50);
+  border: 1.5px dashed var(--color-teal-300);
+  color: var(--color-teal-700);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.admin-btn-add:hover {
+  background-color: var(--color-teal-100);
+  border-color: var(--color-teal-600);
+}
+
+/* Image Upload Preview in Admin */
+.admin-img-preview-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+  background-color: #fafbfb;
+  border: 1px solid var(--color-border);
+  padding: 10px;
+  border-radius: var(--radius-sm);
+}
+
+.admin-img-thumb {
+  width: 90px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+  background-color: #edf2f7;
+}
+
+.admin-file-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  background-color: #edf2f7;
+  color: #2d3748;
+  border-radius: var(--radius-sm);
+  border: 1px solid #cbd5e0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-file-upload-btn:hover {
+  background-color: #e2e8f0;
+}
+
+@media (max-width: 860px) {
+  .admin-modal-window {
+    height: 100vh;
+    border-radius: 0;
+  }
+
+  .admin-modal-body {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: 8px;
+  }
+
+  .admin-tab-btn {
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+
+  .admin-tab-content-area {
+    padding: 16px;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

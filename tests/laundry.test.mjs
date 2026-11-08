@@ -204,3 +204,70 @@ test('mergeConfigWithDefaults preserves structure while applying client override
   assert.equal(merged.images.promo, DEFAULT_CONFIG.images.promo);
   assert.equal(merged.services.length, DEFAULT_CONFIG.services.length);
 });
+
+test('sanitizeConfig handles user deleting items, omitting IDs, and custom names gracefully', () => {
+  const { sanitizeConfig } = globalThis.ChinguLaundry;
+
+  // Simulate user editing script.js without specifying IDs and deleting services down to 1
+  const sanitized = sanitizeConfig({
+    brandName: 'Laundry Kiloan Berkah',
+    whatsappNumber: '0857-1122-3344',
+    heroMetrics: [{ value: '500+', label: 'Pelanggan Aktif' }],
+    services: [
+      {
+        name: 'Cuci Saja Murah',
+        pricePerKg: 6000,
+        // user forgot id and minKg
+      },
+    ],
+    speeds: [
+      {
+        name: 'Super Kilat',
+        eta: '2 Jam',
+        extraPerKg: 5000,
+      },
+    ],
+    outlets: [
+      {
+        name: 'Cabang Pasar Minggu',
+        city: 'Jakarta Selatan',
+      },
+    ],
+  });
+
+  assert.equal(sanitized.brandName, 'Laundry Kiloan Berkah');
+  assert.equal(sanitized.whatsappNumber, '6285711223344');
+  assert.equal(sanitized.heroMetrics.length, 1);
+  assert.equal(sanitized.heroMetrics[0].value, '500+');
+  assert.equal(sanitized.services.length, 1);
+  assert.equal(sanitized.services[0].name, 'Cuci Saja Murah');
+  assert.ok(sanitized.services[0].id.includes('cuci-saja-murah'));
+  assert.equal(sanitized.services[0].minKg, 1);
+  assert.equal(sanitized.services[0].pricePerKg, 6000);
+  assert.equal(sanitized.speeds.length, 1);
+  assert.equal(sanitized.speeds[0].name, 'Super Kilat');
+  assert.ok(sanitized.speeds[0].id.includes('super-kilat'));
+  assert.equal(sanitized.outlets.length, 1);
+  assert.equal(sanitized.outlets[0].name, 'Cabang Pasar Minggu');
+});
+
+test('calculateOrderEstimate succeeds even if selected service was deleted', () => {
+  const { sanitizeConfig, calculateOrderEstimate } = globalThis.ChinguLaundry;
+
+  const userCustomConfig = sanitizeConfig({
+    services: [{ id: 'layanan-tunggal', name: 'Layanan Tunggal', pricePerKg: 10000, minKg: 2 }],
+  });
+
+  // User had old serviceId 'cuci-kering-gosok' stored in state
+  const estimate = calculateOrderEstimate({
+    config: userCustomConfig,
+    serviceId: 'cuci-kering-gosok-non-existent',
+    speedId: 'reguler',
+    weight: 3,
+  });
+
+  assert.equal(estimate.service.id, 'layanan-tunggal');
+  assert.equal(estimate.service.name, 'Layanan Tunggal');
+  assert.equal(estimate.totalAmount, 30000);
+});
+

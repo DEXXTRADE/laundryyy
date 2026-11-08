@@ -27,6 +27,10 @@
     <!-- Stylesheet Utama CSS3 -->
     <link rel="stylesheet" href="./style.css" />
 
+    <!-- Firebase CDN (Compat - Zero-build Vanilla JS compatible with GitHub Pages) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
     <!-- Lucide Icons CDN & Logika Aplikasi Vanilla JavaScript -->
     <script defer src="https://unpkg.com/lucide@0.546.0/dist/umd/lucide.min.js"></script>
     <script defer src="./script.js"></script>
@@ -140,22 +144,9 @@
               <a href="#harga" class="btn btn-outline-light btn-lg">Lihat Daftar Tarif</a>
             </div>
 
-            <!-- Proof Strip (Tabular Numerals, Unboxed, Editable in Admin) -->
+            <!-- Proof Strip (Tabular Numerals, Unboxed, Diisi Dinamis oleh script.js) -->
             <div id="hero-metrics" class="hero-metrics" aria-label="Statistik layanan">
-              <div class="hero-metric-item">
-                <strong class="metric-value" id="metric-val-0">27+</strong>
-                <span class="metric-label" id="metric-lbl-0">Outlet di 5 Kota</span>
-              </div>
-              <div class="hero-metric-divider" aria-hidden="true"></div>
-              <div class="hero-metric-item">
-                <strong class="metric-value" id="metric-val-1">30 Mnt</strong>
-                <span class="metric-label" id="metric-lbl-1">Pickup Kurir Cepat</span>
-              </div>
-              <div class="hero-metric-divider" aria-hidden="true"></div>
-              <div class="hero-metric-item">
-                <strong class="metric-value" id="metric-val-2">3 Jam</strong>
-                <span class="metric-label" id="metric-lbl-2">Layanan Express Kilat</span>
-              </div>
+              <!-- Diisi dinamis oleh script.js sesuai LAUNDRY_CONFIG.heroMetrics -->
             </div>
           </div>
 
@@ -254,71 +245,7 @@
           </div>
 
           <div id="features-grid" class="features-grid">
-            <article class="feature-card">
-              <div class="feature-top">
-                <span class="feature-num">01</span>
-                <span class="feature-icon-box" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="2" width="18" height="20" rx="2"></rect>
-                    <circle cx="12" cy="13" r="5"></circle>
-                    <line x1="7" y1="6" x2="7.01" y2="6"></line>
-                  </svg>
-                </span>
-              </div>
-              <h3 class="feature-title">1 Mesin untuk 1 Pelanggan</h3>
-              <p class="feature-desc">
-                Setiap order diproses dalam tabung cuci terpisah untuk menjaga higienitas dan mencegah pakaian tertukar.
-              </p>
-            </article>
-
-            <article class="feature-card">
-              <div class="feature-top">
-                <span class="feature-num">02</span>
-                <span class="feature-icon-box" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                </span>
-              </div>
-              <h3 class="feature-title">Pilihan Kecepatan Express 3 Jam</h3>
-              <p class="feature-desc">
-                Tersedia layanan Reguler 3 Hari, One Day 24 Jam, Express 6 Jam, hingga paket kilat Quick 3 Jam selesai.
-              </p>
-            </article>
-
-            <article class="feature-card">
-              <div class="feature-top">
-                <span class="feature-num">03</span>
-                <span class="feature-icon-box" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="3" width="15" height="13"></rect>
-                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
-                  </svg>
-                </span>
-              </div>
-              <h3 class="feature-title">Kurir Jemput Maksimal 30 Menit</h3>
-              <p class="feature-desc">
-                Pesan dari rumah atau kantor, kurir mitra kami segera menjemput cucian Anda dan mengantar kembali dalam keadaan rapi.
-              </p>
-            </article>
-
-            <article class="feature-card">
-              <div class="feature-top">
-                <span class="feature-num">04</span>
-                <span class="feature-icon-box" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-                  </svg>
-                </span>
-              </div>
-              <h3 class="feature-title">Setrika Uap &amp; Parfum Eksklusif</h3>
-              <p class="feature-desc">
-                Finishing menggunakan boiler setrika uap yang aman untuk bahan sensitif serta pilihan parfum tahan lama.
-              </p>
-            </article>
+            <!-- Diisi dinamis oleh script.js sesuai LAUNDRY_CONFIG.features -->
           </div>
         </div>
       </section>
@@ -684,42 +611,7 @@
             </p>
 
             <ol id="process-list" class="process-list">
-              <li class="process-step">
-                <span class="step-badge mono-num">01</span>
-                <div>
-                  <h3 class="step-title">Hitung Estimasi &amp; Konfirmasi Form</h3>
-                  <p class="step-desc">
-                    Pilih jenis layanan kiloan, kecepatan pengerjaan, dan isi alamat penjemputan melalui kalkulator di atas.
-                  </p>
-                </div>
-              </li>
-              <li class="process-step">
-                <span class="step-badge mono-num">02</span>
-                <div>
-                  <h3 class="step-title">Kurir Jemput Maksimal 30 Menit</h3>
-                  <p class="step-desc">
-                    Kurir outlet terdekat datang menjemput cucian dan melakukan penimbangan transparan di tempat.
-                  </p>
-                </div>
-              </li>
-              <li class="process-step">
-                <span class="step-badge mono-num">03</span>
-                <div>
-                  <h3 class="step-title">Proses Cuci 1 Mesin 1 Pelanggan</h3>
-                  <p class="step-desc">
-                    Dicuci dengan deterjen antibakteri ramah serat kain, dikeringkan optimal, dan disetrika uap secara teliti.
-                  </p>
-                </div>
-              </li>
-              <li class="process-step">
-                <span class="step-badge mono-num">04</span>
-                <div>
-                  <h3 class="step-title">Pengantaran Rapi &amp; Pembayaran Mudah</h3>
-                  <p class="step-desc">
-                    Cucian diantar dalam kemasan rapi dan wangi. Pembayaran praktis via QRIS, transfer bank, atau tunai.
-                  </p>
-                </div>
-              </li>
+              <!-- Diisi dinamis oleh script.js sesuai LAUNDRY_CONFIG.processSteps -->
             </ol>
           </div>
 
@@ -826,56 +718,7 @@
             </div>
 
             <div id="testimonials-grid" class="testimonials-grid">
-              <figure class="testimonial-card">
-                <div class="star-row" aria-label="Rating 5 dari 5">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                </div>
-                <blockquote class="testimonial-quote">
-                  Pengerjaan sangat cepat, lipatan rapi, dan aromanya tahan lama. Konsep satu mesin satu pelanggan membuat saya tenang mencuci pakaian kerja setiap minggu.
-                </blockquote>
-                <figcaption class="testimonial-author">
-                  <strong>Inggit Chairun</strong>
-                  <span>Content Creator · Bandung</span>
-                </figcaption>
-              </figure>
-
-              <figure class="testimonial-card">
-                <div class="star-row" aria-label="Rating 5 dari 5">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                </div>
-                <blockquote class="testimonial-quote">
-                  Sangat terbantu dengan paket Express dan layanan antar-jemputnya. Estimasi biaya di kalkulator transparan dan respon admin WhatsApp sangat sigap.
-                </blockquote>
-                <figcaption class="testimonial-author">
-                  <strong>Radya Ananta Vikrama</strong>
-                  <span>Karyawan Swasta · Jakarta Selatan</span>
-                </figcaption>
-              </figure>
-
-              <figure class="testimonial-card">
-                <div class="star-row" aria-label="Rating 5 dari 5">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                </div>
-                <blockquote class="testimonial-quote">
-                  Harga kiloan sangat bersahabat untuk mahasiswa, pakaian halus tidak pernah melar karena disetrika uap, dan selalu selesai sesuai jam yang dijanjikan.
-                </blockquote>
-                <figcaption class="testimonial-author">
-                  <strong>Salsabila Septia Gunawan</strong>
-                  <span>Mahasiswi · Dago Bandung</span>
-                </figcaption>
-              </figure>
+              <!-- Diisi dinamis oleh script.js sesuai LAUNDRY_CONFIG.testimonials -->
             </div>
           </div>
         </div>
@@ -890,61 +733,7 @@
           </div>
 
           <div class="faq-list" id="faq-list">
-            <details class="faq-item" open>
-              <summary class="faq-question">
-                <span>Berapa minimal berat pemesanan laundry kiloan?</span>
-                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </summary>
-              <div class="faq-answer">
-                <p>
-                  Pemesanan laundry kiloan dapat dimulai dari 1 kg dengan perhitungan berat aktual yang ditimbang langsung oleh kurir atau petugas outlet menggunakan timbangan digital terkalibrasi.
-                </p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>Apakah cucian saya digabung dengan pakaian pelanggan lain?</span>
-                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </summary>
-              <div class="faq-answer">
-                <p>
-                  Tidak pernah. Kami menerapkan standar operasional 1 mesin cuci dan 1 mesin pengering khusus untuk 1 pelanggan demi menjaga kebersihan higienis dan mencegah pakaian tertukar.
-                </p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>Bagaimana cara kerja layanan antar-jemput 30 menit?</span>
-                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </summary>
-              <div class="faq-answer">
-                <p>
-                  Setelah Anda mengisi kalkulator dan mengirim konfirmasi pesanan ke WhatsApp admin, kurir outlet terdekat akan menuju lokasi penjemputan dalam estimasi waktu maksimal 30 menit pada jam operasional.
-                </p>
-              </div>
-            </details>
-
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>Metode pembayaran apa saja yang tersedia?</span>
-                <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </summary>
-              <div class="faq-answer">
-                <p>
-                  Anda dapat membayar secara cashless melalui QRIS (GoPay, OVO, DANA, ShopeePay, BCA, Mandiri, dan seluruh aplikasi perbankan), transfer bank, maupun tunai saat penjemputan atau pengantaran.
-                </p>
-              </div>
-            </details>
+            <!-- Diisi dinamis oleh script.js sesuai LAUNDRY_CONFIG.faqs -->
           </div>
         </div>
       </section>
@@ -988,7 +777,7 @@
 
       <div class="container footer-bottom">
         <p class="copyright-text">
-          &copy; <span id="copyright-year">2026</span> <span id="copyright-brand">Chingu Laundry Express</span>. Seluruh hak cipta dilindungi.
+          &copy; <span id="copyright-year">2026</span> <span id="copyright-brand" class="secret-admin-trigger" title="&copy;">dex Laundry Express</span>. Seluruh hak cipta dilindungi.
         </p>
       </div>
     </footer>
@@ -996,17 +785,451 @@
     <!-- Floating Quick WhatsApp Action -->
     <a
       id="floating-wa-btn"
-      href="https://wa.me/6281120081012?text=Halo%20Chingu%20Laundry%2C%20saya%20ingin%20bertanya%20tentang%20layanan%20laundry."
+      href="https://wa.me/6282276328839?text=Halo%20dex%20Laundry%2C%20saya%20ingin%20bertanya%20tentang%20layanan%20laundry."
       target="_blank"
       rel="noopener noreferrer"
       class="floating-wa-btn"
       aria-label="Chat WhatsApp Admin Laundry"
     >
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
       </svg>
       <span>Chat Admin</span>
     </a>
+
+    <!-- ====================================================================
+         MODAL RAHASIA: 1. AUTENTIKASI PIN ADMIN (Tersembunyi dari Pengunjung)
+         ==================================================================== -->
+    <div id="secret-pin-modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="pin-modal-title">
+      <div class="pin-modal-card">
+        <div class="pin-modal-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <h2 id="pin-modal-title" class="pin-modal-title">Panel Pengelola</h2>
+        <p class="pin-modal-desc">
+          Area khusus pemilik website. Masukkan PIN keamanan untuk mengedit seluruh konten dan tarif laundry.
+        </p>
+
+        <form id="pin-auth-form">
+          <div class="pin-input-group">
+            <input
+              type="password"
+              id="admin-pin-input"
+              class="pin-input"
+              maxlength="12"
+              inputmode="numeric"
+              placeholder="••••••"
+              autocomplete="current-password"
+              required
+            />
+            <div id="pin-error-msg" class="pin-error-msg" role="alert"></div>
+          </div>
+
+          <div class="pin-actions">
+            <button type="submit" class="btn btn-primary btn-full">Buka Panel Admin</button>
+            <button type="button" id="pin-cancel-btn" class="btn btn-outline-dark btn-full">Batal / Tutup</button>
+          </div>
+        </form>
+        <p class="pin-hint">PIN Bawaan: <strong>123456</strong> (Dapat diubah di dalam panel admin)</p>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         MODAL RAHASIA: 2. CMS PANEL PENGELOLA LENGKAP & SINKRONISASI FIREBASE
+         ==================================================================== -->
+    <div id="secret-admin-modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="admin-dialog-title">
+      <div class="admin-modal-window">
+        <!-- Header -->
+        <div class="admin-modal-header">
+          <div class="admin-header-title-box">
+            <h2 id="admin-dialog-title" class="admin-header-title">Panel Pengelola Konten &amp; Tarif</h2>
+            <span id="firebase-sync-badge" class="sync-badge sync-online">Firebase Cloud: Terhubung</span>
+          </div>
+          <button type="button" id="admin-close-x-btn" class="admin-close-btn" aria-label="Tutup Panel">&times;</button>
+        </div>
+
+        <!-- Toolbar Aksi Simpan / Batal -->
+        <div class="admin-action-toolbar">
+          <span id="admin-save-status" class="admin-status-text">
+            Perubahan otomatis tersinkron ke Cloud Firestore (semua perangkat).
+          </span>
+          <div class="admin-actions-btns">
+            <button type="button" id="admin-reset-default-btn" class="btn btn-outline-dark btn-sm">Reset Bawaan</button>
+            <button type="button" id="admin-discard-btn" class="btn btn-outline-dark btn-sm">Tutup</button>
+            <button type="button" id="admin-save-cloud-btn" class="btn btn-primary btn-sm">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span>Simpan ke Cloud Firebase</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Body: Sidebar Tabs + Forms -->
+        <div class="admin-modal-body">
+          <!-- Sidebar Navigation Tabs -->
+          <nav class="admin-sidebar" aria-label="Kategori Pengaturan">
+            <button type="button" class="admin-tab-btn is-active" data-tab="tab-brand">Brand &amp; Kontak</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-hero">Hero &amp; Statistik</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-promo">Promo &amp; Voucher</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-features">Keunggulan</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-services">Layanan &amp; Tarif</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-speeds">Kecepatan &amp; Durasi</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-fragrances">Aroma Parfum</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-process">Alur Layanan</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-outlets">Cabang Outlet</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-testimonials">Testimoni</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-faqs">Tanya Jawab (FAQ)</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-images">Foto &amp; Gambar</button>
+            <button type="button" class="admin-tab-btn" data-tab="tab-security">Keamanan &amp; PIN</button>
+          </nav>
+
+          <!-- Content Panels -->
+          <div class="admin-tab-content-area">
+            <!-- 1. Brand & Kontak -->
+            <div id="tab-brand" class="admin-tab-pane is-active">
+              <h3 class="admin-section-heading">Informasi Brand &amp; Kontak Resmi</h3>
+              <p class="admin-section-sub">Atur nama usaha laundry, nomor WhatsApp tujuan pesanan, dan jam operasional.</p>
+              <div class="admin-form-grid">
+                <div>
+                  <label class="admin-field-label" for="adm-brand-name">Nama Brand Laundry</label>
+                  <input type="text" id="adm-brand-name" class="admin-input" placeholder="dex Laundry" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-wa-number">Nomor WhatsApp Admin (Order)</label>
+                  <input type="text" id="adm-wa-number" class="admin-input" placeholder="082276328839 atau 6282276328839" />
+                  <p class="admin-field-help">Gunakan format 08xx atau 628xx. Otomatis dikonversi ke tautan wa.me resmi.</p>
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-operational-hours">Jam Operasional</label>
+                  <input type="text" id="adm-operational-hours" class="admin-input" placeholder="Setiap hari 07.00 – 20.00 WIB" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-copyright-brand">Teks Hak Cipta Footer</label>
+                  <input type="text" id="adm-copyright-brand" class="admin-input" placeholder="dex Laundry Express" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-footer-desc">Deskripsi Singkat di Footer</label>
+                  <textarea id="adm-footer-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Hero & Statistik -->
+            <div id="tab-hero" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Banner Utama (Hero) &amp; Angka Statistik</h3>
+              <p class="admin-section-sub">Sesuaikan teks headline, subjudul, dan 3 kartu metrik pembuktian layanan.</p>
+              <div class="admin-form-grid">
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-hero-eyebrow">Teks Label Atas (Eyebrow)</label>
+                  <input type="text" id="adm-hero-eyebrow" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-hero-title">Judul Utama (Headline)</label>
+                  <input type="text" id="adm-hero-title" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-hero-subtitle">Subjudul Penjelasan</label>
+                  <textarea id="adm-hero-subtitle" class="admin-textarea" rows="2"></textarea>
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-hero-cta">Teks Tombol Pesan (CTA)</label>
+                  <input type="text" id="adm-hero-cta" class="admin-input" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-hero-caption-title">Teks Badge Foto</label>
+                  <input type="text" id="adm-hero-caption-title" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label">3 Angka Statistik di Bawah Tombol Hero</label>
+                  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 8px;">
+                    <div>
+                      <input type="text" id="adm-metric-val-0" class="admin-input" placeholder="27+" style="margin-bottom: 6px; font-weight: 700;" />
+                      <input type="text" id="adm-metric-lbl-0" class="admin-input" placeholder="Outlet di 5 Kota" />
+                    </div>
+                    <div>
+                      <input type="text" id="adm-metric-val-1" class="admin-input" placeholder="30 Mnt" style="margin-bottom: 6px; font-weight: 700;" />
+                      <input type="text" id="adm-metric-lbl-1" class="admin-input" placeholder="Pickup Kurir Cepat" />
+                    </div>
+                    <div>
+                      <input type="text" id="adm-metric-val-2" class="admin-input" placeholder="3 Jam" style="margin-bottom: 6px; font-weight: 700;" />
+                      <input type="text" id="adm-metric-lbl-2" class="admin-input" placeholder="Layanan Express Kilat" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Promo & Voucher -->
+            <div id="tab-promo" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Pengaturan Promo &amp; Kode Voucher</h3>
+              <p class="admin-section-sub">Kelola banner pengumuman atas, kartu promo, dan diskon kalkulator otomatis.</p>
+              <div class="admin-form-grid">
+                <div>
+                  <label class="admin-field-label" for="adm-promo-enabled">Status Promo</label>
+                  <select id="adm-promo-enabled" class="admin-select">
+                    <option value="true">Aktif (Tampilkan Banner &amp; Diskon)</option>
+                    <option value="false">Nonaktif (Sembunyikan Promo)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-promo-code">Kode Voucher (Kupon)</label>
+                  <input type="text" id="adm-promo-code" class="admin-input" placeholder="CHINGU10" style="text-transform: uppercase;" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-promo-discount">Persentase Diskon (%)</label>
+                  <input type="number" id="adm-promo-discount" class="admin-input" min="0" max="90" placeholder="10" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-promo-card-title">Judul Kartu Promo</label>
+                  <input type="text" id="adm-promo-card-title" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-promo-text">Teks Banner Bar Berjalan di Atas</label>
+                  <input type="text" id="adm-promo-text" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-promo-card-desc">Deskripsi Kartu Promo</label>
+                  <textarea id="adm-promo-card-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Keunggulan -->
+            <div id="tab-features" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Keunggulan Layanan</h3>
+              <p class="admin-section-sub">Edit judul seksi dan 4 pilar keunggulan utama.</p>
+              <div class="admin-form-grid">
+                <div>
+                  <label class="admin-field-label" for="adm-features-kicker">Kicker (Label Kecil)</label>
+                  <input type="text" id="adm-features-kicker" class="admin-input" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-features-title">Judul Seksi Keunggulan</label>
+                  <input type="text" id="adm-features-title" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-features-lead">Deskripsi Pembuka</label>
+                  <textarea id="adm-features-lead" class="admin-textarea" rows="2"></textarea>
+                </div>
+              </div>
+              <div id="adm-features-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 5. Layanan & Tarif Kiloan -->
+            <div id="tab-services" class="admin-tab-pane">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div>
+                  <h3 class="admin-section-heading">Daftar Layanan &amp; Tarif Kiloan</h3>
+                  <p class="admin-section-sub">Tambah, ubah tarif per kilogram, berat minimal, atau hapus layanan.</p>
+                </div>
+                <button type="button" id="adm-add-service-btn" class="admin-btn-add">+ Tambah Layanan</button>
+              </div>
+              <div id="adm-services-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 6. Kecepatan & Durasi -->
+            <div id="tab-speeds" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Opsi Kecepatan &amp; Durasi Pengerjaan</h3>
+              <p class="admin-section-sub">Atur durasi (ETA) dan biaya tambahan per kg untuk setiap paket kecepatan.</p>
+              <div id="adm-speeds-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 7. Aroma Parfum -->
+            <div id="tab-fragrances" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Pilihan Aroma Parfum</h3>
+              <p class="admin-section-sub">Tuliskan aroma parfum pilihan pelanggan yang akan muncul pada dropdown kalkulator (pisahkan dengan koma).</p>
+              <div>
+                <label class="admin-field-label" for="adm-fragrances-text">Daftar Aroma Parfum (Pisahkan dengan koma)</label>
+                <textarea id="adm-fragrances-text" class="admin-textarea" rows="4" placeholder="Sakura Bloom, Fresh Cotton, Ocean Breeze, Tanpa Parfum"></textarea>
+                <p class="admin-field-help">Contoh: Sakura Bloom, Fresh Cotton, Ocean Breeze, Floral Sweet, Tanpa Parfum</p>
+              </div>
+            </div>
+
+            <!-- 8. Alur Layanan -->
+            <div id="tab-process" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Alur Layanan Praktis</h3>
+              <p class="admin-section-sub">Edit judul dan langkah-langkah alur penjemputan hingga pengantaran.</p>
+              <div class="admin-form-grid">
+                <div>
+                  <label class="admin-field-label" for="adm-process-kicker">Kicker</label>
+                  <input type="text" id="adm-process-kicker" class="admin-input" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-process-title">Judul Seksi Alur</label>
+                  <input type="text" id="adm-process-title" class="admin-input" />
+                </div>
+                <div class="admin-field-full">
+                  <label class="admin-field-label" for="adm-process-lead">Deskripsi Pembuka</label>
+                  <textarea id="adm-process-lead" class="admin-textarea" rows="2"></textarea>
+                </div>
+              </div>
+              <div id="adm-process-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 9. Cabang Outlet -->
+            <div id="tab-outlets" class="admin-tab-pane">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div>
+                  <h3 class="admin-section-heading">Jaringan Cabang Outlet</h3>
+                  <p class="admin-section-sub">Kelola nama cabang, kota, dan alamat untuk filter serta pilihan order.</p>
+                </div>
+                <button type="button" id="adm-add-outlet-btn" class="admin-btn-add">+ Tambah Cabang</button>
+              </div>
+              <div id="adm-outlets-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 10. Testimoni -->
+            <div id="tab-testimonials" class="admin-tab-pane">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div>
+                  <h3 class="admin-section-heading">Kepercayaan Pelanggan (Testimoni)</h3>
+                  <p class="admin-section-sub">Ubah ulasan, nama pelanggan, rating bintang (1-5), atau tambah testimoni baru.</p>
+                </div>
+                <button type="button" id="adm-add-testimonial-btn" class="admin-btn-add">+ Tambah Ulasan</button>
+              </div>
+              <div class="admin-form-grid" style="margin-bottom: 16px;">
+                <div>
+                  <label class="admin-field-label" for="adm-testi-kicker">Kicker Testimoni</label>
+                  <input type="text" id="adm-testi-kicker" class="admin-input" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-testi-title">Judul Testimoni</label>
+                  <input type="text" id="adm-testi-title" class="admin-input" />
+                </div>
+              </div>
+              <div id="adm-testimonials-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 11. FAQ -->
+            <div id="tab-faqs" class="admin-tab-pane">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                <div>
+                  <h3 class="admin-section-heading">Tanya Jawab (FAQ)</h3>
+                  <p class="admin-section-sub">Kelola daftar pertanyaan yang sering diajukan beserta jawabannya.</p>
+                </div>
+                <button type="button" id="adm-add-faq-btn" class="admin-btn-add">+ Tambah Pertanyaan</button>
+              </div>
+              <div class="admin-form-grid" style="margin-bottom: 16px;">
+                <div>
+                  <label class="admin-field-label" for="adm-faq-kicker">Kicker FAQ</label>
+                  <input type="text" id="adm-faq-kicker" class="admin-input" />
+                </div>
+                <div>
+                  <label class="admin-field-label" for="adm-faq-title">Judul Seksi FAQ</label>
+                  <input type="text" id="adm-faq-title" class="admin-input" />
+                </div>
+              </div>
+              <div id="adm-faqs-list" class="admin-card-list"></div>
+            </div>
+
+            <!-- 12. Foto & Gambar -->
+            <div id="tab-images" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Foto &amp; Gambar Website</h3>
+              <p class="admin-section-sub">Unggah file foto langsung dari perangkat Anda atau masukkan tautan URL gambar.</p>
+              <div class="admin-form-grid">
+                <!-- Hero Photo -->
+                <div class="admin-field-full">
+                  <label class="admin-field-label">Foto Ruang Lounge Utama (Hero)</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="adm-img-hero" class="admin-input" placeholder="./assets/images/hero_laundry_lounge.jpg" />
+                    <label class="admin-file-upload-btn">
+                      <span>Pilih File</span>
+                      <input type="file" id="adm-file-hero" accept="image/*" style="display:none;" />
+                    </label>
+                  </div>
+                  <div class="admin-img-preview-box">
+                    <img id="preview-img-hero" class="admin-img-thumb" alt="Preview Hero" />
+                    <span class="admin-field-help">Foto yang tampil di bagian paling atas beranda (sebelah kanan judul).</span>
+                  </div>
+                </div>
+
+                <!-- Promo Photo -->
+                <div class="admin-field-full">
+                  <label class="admin-field-label">Foto Kartu Promo / Lipatan Rapi</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="adm-img-promo" class="admin-input" placeholder="./assets/images/promo_fresh_linens.jpg" />
+                    <label class="admin-file-upload-btn">
+                      <span>Pilih File</span>
+                      <input type="file" id="adm-file-promo" accept="image/*" style="display:none;" />
+                    </label>
+                  </div>
+                  <div class="admin-img-preview-box">
+                    <img id="preview-img-promo" class="admin-img-thumb" alt="Preview Promo" />
+                    <span class="admin-field-help">Foto yang tampil pada kartu penawaran diskon samping kalkulator.</span>
+                  </div>
+                </div>
+
+                <!-- Facility Photo -->
+                <div class="admin-field-full">
+                  <label class="admin-field-label">Foto Fasilitas &amp; Setrika Uap</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="adm-img-facility" class="admin-input" placeholder="./assets/images/facility_steam_care.jpg" />
+                    <label class="admin-file-upload-btn">
+                      <span>Pilih File</span>
+                      <input type="file" id="adm-file-facility" accept="image/*" style="display:none;" />
+                    </label>
+                  </div>
+                  <div class="admin-img-preview-box">
+                    <img id="preview-img-facility" class="admin-img-thumb" alt="Preview Fasilitas" />
+                    <span class="admin-field-help">Foto yang tampil di seksi alur pengerjaan 4 langkah.</span>
+                  </div>
+                </div>
+
+                <!-- Outlet Photo -->
+                <div class="admin-field-full">
+                  <label class="admin-field-label">Foto Gerai Resmi &amp; Kemitraan</label>
+                  <div style="display: flex; gap: 8px;">
+                    <input type="text" id="adm-img-outlet" class="admin-input" placeholder="./assets/images/outlet_storefront_interior.jpg" />
+                    <label class="admin-file-upload-btn">
+                      <span>Pilih File</span>
+                      <input type="file" id="adm-file-outlet" accept="image/*" style="display:none;" />
+                    </label>
+                  </div>
+                  <div class="admin-img-preview-box">
+                    <img id="preview-img-outlet" class="admin-img-thumb" alt="Preview Outlet" />
+                    <span class="admin-field-help">Foto yang tampil di samping daftar cabang outlet resmi.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 13. Keamanan & Database Firebase -->
+            <div id="tab-security" class="admin-tab-pane">
+              <h3 class="admin-section-heading">Keamanan &amp; Database Cloud Firebase</h3>
+              <p class="admin-section-sub">Pengaturan PIN keamanan pengelola dan status koneksi database realtime.</p>
+              <div class="admin-form-grid">
+                <div>
+                  <label class="admin-field-label" for="adm-security-pin">PIN Masuk Admin (6 Digit)</label>
+                  <input type="password" id="adm-security-pin" class="admin-input" maxlength="12" placeholder="123456" />
+                  <p class="admin-field-help">PIN ini tersimpan di Firebase dan berlaku di seluruh perangkat Anda.</p>
+                </div>
+                <div>
+                  <label class="admin-field-label">Status Sinkronisasi Firebase</label>
+                  <div style="padding: 10px 12px; background: #f0fff4; border: 1px solid #c6f6d5; border-radius: 6px; font-size: 0.8125rem; color: #22543d; font-weight: 600;">
+                    Project ID: <code>web-wedding-4d4ce</code><br />
+                    Collection: <code>dex_laundry_cms</code> &bull; Doc: <code>active_config</code><br />
+                    Sinkronisasi Multi-Device: <strong>Aktif Real-Time</strong>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--color-border);">
+                <h4 style="font-size: 0.9375rem; font-weight: 700; margin-bottom: 6px;">Cara Membuka Panel Ini Tanpa Tombol Publik:</h4>
+                <ul style="font-size: 0.8125rem; color: #4a5568; line-height: 1.6; padding-left: 20px;">
+                  <li><strong>Di Laptop / Komputer:</strong> Tekan kombinasi tombol <code>Ctrl + Shift + A</code> (atau <code>Cmd + Shift + A</code> di Mac).</li>
+                  <li><strong>Di Smartphone / Layar Sentuh:</strong> Ketuk 3 kali (triple-tap) secara cepat pada teks <em>&copy; 2026 dex Laundry Express</em> di bagian footer paling bawah.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </body>
 </html>
